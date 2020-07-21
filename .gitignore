@@ -1,2 +1,7 @@
 node_modules
+<<<<<<< HEAD
 .DS_Store
+=======
+.DS_Store
+.cache
+>>>>>>> dev
