@@ -1,0 +1,15 @@
+// App CSS Variables
+@import './partials/variables';
+
+// Bootstrap CSS
+$theme-colors:(
+    "dark": $app-dark
+);
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+
+// App CSS Partials
+@import './partials/layout';
+@import './partials/base';
+@import './partials/map';
