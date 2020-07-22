@@ -1,0 +1,13 @@
+html, body {
+    background-color: rgb(225, 226, 231);
+    margin:0;
+    padding:0;
+}
+
+.element-shadow {
+    box-shadow: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23)
+}
+
+.app-title {
+    font-variant-caps: small-caps;
+}
