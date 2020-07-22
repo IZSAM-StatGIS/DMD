@@ -8,5 +8,17 @@ import 'bootstrap'
 import 'bootstrap-select';
 $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+import Split from 'split-grid';
+
+Split({
+  columnGutters: [{
+    track: 2,
+    element: document.querySelector('v-gutter')
+  }],
+  rowGutters: [{
+    track: 2,
+    element: document.querySelector('h-gutter'),
+  }]
+});
 
 import './js/map';
