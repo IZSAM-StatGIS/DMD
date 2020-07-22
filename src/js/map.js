@@ -15,6 +15,6 @@ var map = new Map({
   target: 'map',
   view: new View({
     center: fromLonLat([14.162352, 42.1457401]),
-    zoom: 5
+    zoom: 4
   })
 });

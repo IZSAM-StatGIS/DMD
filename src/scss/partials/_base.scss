@@ -2,6 +2,7 @@ html, body {
     background-color: rgb(225, 226, 231);
     margin:0;
     padding:0;
+    overflow-x: hidden;
 }
 
 .element-shadow {
@@ -10,4 +11,13 @@ html, body {
 
 .app-title {
     font-variant-caps: small-caps;
+}
+
+.nav-tabs > li.active > a {
+    color: #3c5a78;
+    // font-size: 13px;
+}
+.nav-tabs > li > a {
+    color: #FFF;
+    // font-size: 13px;
 }

@@ -1,0 +1,72 @@
+<sidebar class="element-shadow">
+    <!-- Bottom Tab navs -->
+    <ul class="nav nav-tabs bg-dark">
+        <li class="nav-item">
+            <a class="nav-link active" href="#filters-tab" data-toggle="tab">
+                <i class="fas fa-filter fa-lg fa-fw"></i> Filters
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#maps-tab" data-toggle="tab">
+                <i class="fas fa-layer-group fa-lg fa-fw"></i> Maps
+            </a>
+        </li>
+    </ul>
+    <!-- Bottom Tab panes -->
+    <div class="tab-content mt-3 p-2">
+        <div class="tab-pane active" id="filters-tab" role="tabpanel">
+            <form>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <select id="disease" class="selectpicker" data-width="100%"
+                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Disease"
+                                multiple>
+                            <option value="CCHF">CCHF</option>
+                            <option value="RVF">RVF</option>
+                            <option value="SBV">SBV</option>
+                            <option value="WND">WND</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <select id="species" class="selectpicker" data-width="100%"
+                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Species"
+                                multiple>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="row row form-group">
+                    <div class="col-12">
+                        <select id="subtype" class="selectpicker" data-width="100%"
+                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Subtype"
+                                multiple>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <select id="country" class="selectpicker" data-width="100%"
+                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Country"
+                                multiple>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="row row form-group">
+                    <div class="col-6">
+                        <input type="text" class="form-control form-control-sm btn-outline-dark" placeholder="Start date">
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="form-control form-control-sm btn-outline-dark" placeholder="End date">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane" id="maps-tab" role="tabpane">
+            Maps
+        </div>
+    </div>
+</sidebar>

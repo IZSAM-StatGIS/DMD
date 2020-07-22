@@ -6,6 +6,8 @@ $theme-colors:(
     "dark": $app-dark
 );
 
+$enable-rounded: false;
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
 
