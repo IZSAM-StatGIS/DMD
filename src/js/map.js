@@ -18,3 +18,5 @@ var map = new Map({
     zoom: 4
   })
 });
+
+export { map };

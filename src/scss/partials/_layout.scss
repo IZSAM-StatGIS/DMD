@@ -3,13 +3,13 @@ container {
     width: 100vw;
     display: grid;
     grid-gap: .25em;
-    grid-template-rows: 92px 1fr 2px 350px;
-    grid-template-columns: 1fr 2px minmax(200px, 450px);
+    grid-template-rows: 92px 1fr 2px 250px;
+    grid-template-columns: 1fr 2px 450px;
     grid-template-areas: 
-    "header header header"
-    "map  vGutter sidebar"
-    "hGutter vGutter sidebar"
-    "bottombar vGutter sidebar";
+    "header     header      header"
+    "map        vGutter     sidebar"
+    "hGutter    vGutter     sidebar"
+    "bottombar  vGutter     sidebar";
 }
 
 header { 
@@ -38,20 +38,16 @@ bottombar {
 
 h-gutter {
     grid-area: hGutter;
-    width: 50px;
+    width: 80px;
     background-color: $app-gray;
-    // border: 1px solid $app-base;
-    // margin-left: .25em;
     cursor: row-resize;
     margin: 0 auto;
 }
 
 v-gutter {
     grid-area: vGutter;
-    height: 50px;
+    height: 80px;
     background-color: $app-gray;
-    // border: 1px solid $app-light;
-    // margin-bottom: .25em;
     cursor: col-resize;
     margin-top: auto;
     margin-bottom: auto;
