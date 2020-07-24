@@ -14,6 +14,7 @@ import Split from 'split-grid';
 // Application scripts
 import { map } from './js/map';
 import './js/filters';
+import './js/time';
 
 // Split Grid configuration
 Split({

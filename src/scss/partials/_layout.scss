@@ -3,13 +3,13 @@ container {
     width: 100vw;
     display: grid;
     grid-gap: .25em;
-    grid-template-rows: 92px 1fr 2px 300px;
-    grid-template-columns: 1fr 2px 500px;
+    grid-template-rows: 92px 1fr 2px 350px;
+    grid-template-columns: 1fr 2px 550px;
     grid-template-areas: 
     "header     header      header"
     "map        vGutter     sidebar"
     "hGutter    vGutter     sidebar"
-    "bottombar  vGutter     sidebar"
+    "bottombar  vGutter     otbchart"
 }
 
 header { 
@@ -26,7 +26,8 @@ sidebar {
     grid-area: sidebar;
     background-color: #FFF;
     margin-right: .25em;
-    margin-bottom: .25em;
+    margin-bottom: .4em;
+    overflow: scroll;
 }
 
 bottombar {
@@ -36,12 +37,22 @@ bottombar {
     margin-bottom: .25em;
 }
 
+otbchart {
+    grid-area: otbchart;
+    background-color: #FFF;
+    margin-right: .25em;
+    margin-bottom: .25em;
+}
+
 h-gutter {
     grid-area: hGutter;
     width: 80px;
     background-color: $app-gray;
     cursor: row-resize;
     margin: 0 auto;
+    &:hover {
+        background-color: $app-info;
+    }
 }
 
 v-gutter {
@@ -51,4 +62,7 @@ v-gutter {
     cursor: col-resize;
     margin-top: auto;
     margin-bottom: auto;
+    &:hover {
+        background-color: $app-info;
+    }
 }
