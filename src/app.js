@@ -13,8 +13,10 @@ import Split from 'split-grid';
 
 // Application scripts
 import { map } from './js/map';
+import { adjustTable } from './js/tables';
 import './js/filters';
 import './js/time';
+import './js/lists';
 
 // Split Grid configuration
 Split({
@@ -24,11 +26,12 @@ Split({
   }],
   rowGutters: [{
     track: 2,
-    element: document.querySelector('h-gutter'),
+    element: document.querySelector('h-gutter')
   }],
   onDragEnd: function(e){
+    // console.log('w', $("bottombar").width());
+    // console.log('h', $("bottombar").height());
     map.updateSize();
+    adjustTable('outbreaks');
   }
 });
-
-// export default (window.$ = window.jQuery = jquery,window.moment = moment);
