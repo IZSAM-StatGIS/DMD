@@ -8,12 +8,14 @@ import 'bootstrap';
 import 'bootstrap-select';
 $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+// Tabulator CSS
+import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap4.min.css';
 // Split GRID
 import Split from 'split-grid';
 
 // Application scripts
 import { map } from './js/map';
-import { adjustTable } from './js/tables';
+import { outbreaksGrid } from './js/tables';
 import './js/filters';
 import './js/time';
 import './js/lists';
@@ -32,6 +34,6 @@ Split({
     // console.log('w', $("bottombar").width());
     // console.log('h', $("bottombar").height());
     map.updateSize();
-    adjustTable('outbreaks');
+    outbreaksGrid.setHeight( $("bottombar").height() - 42 );
   }
 });
