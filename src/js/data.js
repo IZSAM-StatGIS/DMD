@@ -3,6 +3,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import { map, outbreaks } from './map';
+import { drawOutbreaksChart } from './chart-otb';
 import { populateOutbreaksGrid, populateDistributionGrid } from './tables'
 
 // Services
@@ -39,6 +40,7 @@ const getOutbreaks = (sql) => {
             token: server.token,
             where: sql,
             outFields: "*",
+            orderByFields: "DATE_OF_START_OF_THE_EVENT",
             geometryPrecision: "3",
             outSR: "3857",
             f: "geojson"
@@ -48,6 +50,8 @@ const getOutbreaks = (sql) => {
         populateOutbreaks(response.data);
         // Popola la grid degli outbreak
         populateOutbreaksGrid(response.data);
+        // Mostra grafico
+        drawOutbreaksChart(response.data);
     });
 };
 

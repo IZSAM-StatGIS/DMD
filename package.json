@@ -33,6 +33,7 @@
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-zoom": "^0.7.5",
     "jquery": "^3.5.1",
+    "jspanel4": "^4.11.0-beta",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",

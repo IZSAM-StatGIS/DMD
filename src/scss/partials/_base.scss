@@ -22,6 +22,16 @@ html, body {
     // font-size: 13px;
 }
 
+/* Stili customizzati Tabulator */
+/* ************************** */
 .tabulator .tabulator-footer {
     padding: 9px 10px !important;
 }
+
+/* Stili customizzati jsPanel */
+/* ************************** */
+.jsPanel { z-index: 1040 !important; }
+.jsPanel .jsPanel-hdr { line-height: 2.1; }
+.jsPanel .jsPanel-ftr.active { padding: 6px 8px; }
+.jsPanel-depth-3 { box-shadow: none; border-radius: 2px; }
+.jsPanel-headerlogo { font-size: 20px; }

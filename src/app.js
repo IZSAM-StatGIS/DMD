@@ -16,6 +16,7 @@ import Split from 'split-grid';
 // Application scripts
 import { map } from './js/map';
 import { outbreaksGrid } from './js/tables';
+import './js/chart-otb';
 import './js/filters';
 import './js/time';
 import './js/lists';
