@@ -2,7 +2,6 @@ import { jsPanel } from 'jspanel4/es6module/jspanel.js';
 import 'jspanel4/es6module/extensions/modal/jspanel.modal.js';
 import 'jspanel4/dist/jspanel.css'
 
-import lodash, { range } from 'lodash';
 import moment from 'moment';
 import 'chart.js';
 
@@ -46,23 +45,21 @@ const drawOutbreaksChart = (data) => {
     });
 
     // console.log(inputData)
-    // console.log('start', inputData[0].date)
-    // console.log('end', inputData[inputData.length -1].date)
-
+    
+    // Calcola range completo di MM-YYYY all'interno dell'intervallo di date definito nei filtri
     let startDate  = moment(moment(document.querySelector('#startdate').value,'DD/MM/YYYY').toDate()).format('MM-YYYY');
     let endDate    = moment(moment(document.querySelector('#enddate').value,'DD/MM/YYYY').toDate()).format('MM-YYYY');
-    console.log(startDate)
     let datesrange = generateMonthRange(startDate, endDate);
     // console.log(datesrange);
 
-    let integrationData = []
-    datesrange.map(dt => { integrationData.push({ "date": dt, "year": dt.split('-')[0], "month": dt.split('-')[1], "disease":"foo" })});
-    // console.log(integrationData)
+    // Costruzione del dataset formattato in maniera ottimale per la generazione del grafico
+    let dataset = []
+    datesrange.forEach(dt => {
+    	var filtered = inputData.filter((e) => {return e.date == dt });
+        dataset.push({ "date":dt, "count": filtered.length });
+    });
 
-    let completeData = inputData.concat(integrationData); 
-    // console.log(completeData)
-
-    completeData.sort(function(a, b) {
+    dataset.sort(function(a, b) {
         var keyA = moment(a.date,'MM-YYYY'),
             keyB = moment(b.date,'MM-YYYY');
         // confronta le date
@@ -70,12 +67,12 @@ const drawOutbreaksChart = (data) => {
         if (keyA > keyB) return 1;
         return 0;
     });
-    
-    let date_groups = lodash.groupBy(completeData, 'date');
 
-    // Dati grafico
-    let labels    = lodash.map(date_groups, (item, key) => { return moment(key,'MM-YYYY').format('MMM YYYY'); });
-    let bars_data = lodash.map(date_groups, (item, key) => { return item.length -1; });
+    // console.log(dataset);    
+
+    // Label e valori
+    let labels    = dataset.map(d =>  moment(d.date,'MM-YYYY').format('MMM YYYY') );
+    let bars_data = dataset.map(d =>  d.count );
     
     // Grafico
 	let ctx = document.getElementById('outbreaks-chart').getContext('2d');
@@ -119,8 +116,8 @@ const drawOutbreaksChart = (data) => {
 
 };
 
-// Genera range di date MM-YYYY
-// ***********************************************
+// Funzione per generare range di date MM-YYYY
+// *******************************************
 
 const generateMonthRange = (start, end) => {
 
