@@ -23,15 +23,31 @@ html, body {
 }
 
 /* Stili customizzati Tabulator */
-/* ************************** */
+/* ******************************/
 .tabulator .tabulator-footer {
     padding: 9px 10px !important;
 }
 
 /* Stili customizzati jsPanel */
-/* ************************** */
+/* ******************************/
 .jsPanel { z-index: 1040 !important; }
 .jsPanel .jsPanel-hdr { line-height: 2.1; }
 .jsPanel .jsPanel-ftr.active { padding: 6px 8px; }
 .jsPanel-depth-3 { box-shadow: none; border-radius: 2px; }
 .jsPanel-headerlogo { font-size: 20px; }
+
+/* Stili customizzati noUiSlider */
+/* ******************************/
+#slider {
+    width: 85%;
+    height: 20px;
+    margin: 10px 0 25px 20px;
+    
+}
+.noUi-touch-area {
+    background-color: $app-dark;
+}
+
+.noUi-target {
+    border-radius: 1px !important;
+}

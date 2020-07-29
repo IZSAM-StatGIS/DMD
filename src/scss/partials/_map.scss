@@ -44,3 +44,8 @@
     top: 0.5em;
     right: 0.5em;
 }
+
+#timeline-panel {
+    min-width: 550px;
+    border-left: 3px solid $app-dark;
+}

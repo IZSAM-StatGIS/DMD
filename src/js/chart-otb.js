@@ -1,9 +1,9 @@
 import { jsPanel } from 'jspanel4/es6module/jspanel.js';
 import 'jspanel4/es6module/extensions/modal/jspanel.modal.js';
 import 'jspanel4/dist/jspanel.css'
-
 import moment from 'moment';
 import 'chart.js';
+import { generateMonthYearRange } from './utils';
 
 jsPanel.create({
     id: 'app-title',
@@ -48,8 +48,13 @@ const drawOutbreaksChart = (data) => {
     
     // Calcola range completo di MM-YYYY all'interno dell'intervallo di date definito nei filtri
     let startDate  = moment(moment(document.querySelector('#startdate').value,'DD/MM/YYYY').toDate()).format('MM-YYYY');
-    let endDate    = moment(moment(document.querySelector('#enddate').value,'DD/MM/YYYY').toDate()).format('MM-YYYY');
-    let datesrange = generateMonthRange(startDate, endDate);
+    // let endDate    = moment(moment(document.querySelector('#enddate').value,'DD/MM/YYYY').toDate()).format('MM-YYYY');
+
+    let timeWindowEndString = document.querySelector("#timewindow-info").textContent.split(' - ')[1]
+    let timeWindowEndDate   = moment(timeWindowEndString,'MMMM YYYY').format('MM-YYYY');
+    // console.log(timeWindowEndDate)
+
+    let datesrange = generateMonthYearRange(startDate, timeWindowEndDate);
     // console.log(datesrange);
 
     // Costruzione del dataset formattato in maniera ottimale per la generazione del grafico
@@ -100,7 +105,9 @@ const drawOutbreaksChart = (data) => {
                 yAxes:[{
                     gridLines: { display:false},
                     ticks:{
-                        fontColor:'#4B515D'
+                        fontColor:'#4B515D',
+                        stepSize: 1,
+                        beginAtZero: true
                     }
                 }],
                 xAxes:[{
@@ -116,22 +123,7 @@ const drawOutbreaksChart = (data) => {
 
 };
 
-// Funzione per generare range di date MM-YYYY
-// *******************************************
 
-const generateMonthRange = (start, end) => {
-
-    var dateStart = moment(start, 'MM-YYYY');
-    var dateEnd   = moment(end, 'MM-YYYY');
-    var arr = [];
-
-    while (dateEnd > dateStart || dateStart.format('M') === dateEnd.format('M')) {
-        arr.push(dateStart.format('MM-YYYY'));
-        dateStart.add(1,'month');
-    }
-
-    return arr;
-}
 
 
 export { drawOutbreaksChart }

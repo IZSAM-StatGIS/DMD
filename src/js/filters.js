@@ -2,7 +2,8 @@ import $ from 'jquery';
 import moment from 'moment';
 import { Datepicker } from 'vanillajs-datepicker';
 import { getOutbreaks, getDistribution } from './data';
-import { setTimeWindow } from './time';
+import { setTimeWindow, setTimeFilter } from './time';
+
 
 // Selezione di tutte le malattie all'avvio
 $('#disease').selectpicker('selectAll');
@@ -52,8 +53,11 @@ const buildRestQuery = (disease, species, subtype, country, source, startdt, end
 };
 
 // Impostazione filtri
-const setFilters = () => {
-    // Parametri form
+const setFilters = (sliderend) => {
+    // L'argomento "sliderend" è opzionale e deve essere passato
+    // solo se la funzione di filtro viene lanciata attraverso il time slider
+    
+    // Parametri query
     // ****************************************************************************
     let disease = $('#disease').val();
     let species = $('#species').val();
@@ -62,6 +66,9 @@ const setFilters = () => {
     let source  = $('#source').val();
     let startdt = $('#startdate').val();
     let enddt   = $('#enddate').val();
+    if (sliderend) {
+        enddt = sliderend
+    }
     // Query
     // ****************************************************************************
     let query = buildRestQuery(disease, species, subtype, country, source, startdt, enddt);
@@ -77,9 +84,15 @@ const setFilters = () => {
     // Get Outbreaks
     // ****************************************************************************
     getOutbreaks(query);
-    // Set time window
+    // Get Distribution
     // ****************************************************************************
-    setTimeWindow()
+    getDistribution(query);
+    // Set time filter and window info panel
+    // ****************************************************************************
+    if (sliderend === undefined) {
+        setTimeFilter();
+        setTimeWindow();
+    }
 }
 
 setFilters();
@@ -102,9 +115,13 @@ $('#reset-filters-btn').click((e)=>{
     // Reset date
     start_date_input.value = moment().subtract(1,'years').format('DD/MM/YYYY');
     end_date_input.value   = moment().format('DD/MM/YYYY');
+    datepicker_start.setDate(start_date_input.value);
+    datepicker_end.setDate(end_date_input.value);
     // Set Filters
     setFilters();
-    // Reset time window
-    setTimeWindow();
-})
+    // Reset time filter and window info panel
+    // setTimeFilter();
+    // setTimeWindow();
+});
 
+export { setFilters }

@@ -32,8 +32,6 @@ Split({
     element: document.querySelector('h-gutter')
   }],
   onDragEnd: function(e){
-    // console.log('w', $("bottombar").width());
-    // console.log('h', $("bottombar").height());
     map.updateSize();
     outbreaksGrid.setHeight( $("bottombar").height() - 42 );
   }
