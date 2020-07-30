@@ -3,6 +3,7 @@ import noUiSlider from 'nouislider'
 import moment from 'moment';
 import { generateMonthYearRange } from './utils';
 import { setFilters } from './filters';
+import { updateModis } from './map';
 
 // Time Filter Info Panel
 const setTimePanel = () => {
@@ -84,6 +85,8 @@ const createSlider = () => {
         // Lancia il filtro passando il parametro opzionale
         let endsliderdate = moment(parseInt(values)).endOf('month').format('DD/MM/YYYY');
         setFilters( endsliderdate );
+        // Aggiorna intervallo Modis
+        updateModis();
     });
     
 }

@@ -12,13 +12,13 @@ const server = {
     image:  "https://webgis.izs.it/arcgis/rest/services/Modis",
     layers: {
         vector: {
-            outbreaks:           { id:"0", zidx:"16" },
-            distribution_aggreg: { id:"1", zidx:"15" },
-            distribution:        { id:"2", zidx:"14" },
-            admin_level_3:       { id:"3", zidx:"13" },
-            admin_level_2:       { id:"4", zidx:"12" },
-            admin_level_1:       { id:"5", zidx:"11" },
-            admin_level_0:       { id:"6", zidx:"10" }
+            outbreaks:           { id:"0", zidx:"18" },
+            distribution_aggreg: { id:"1", zidx:"17" },
+            distribution:        { id:"2", zidx:"16" },
+            admin_level_3:       { id:"3", zidx:"15" },
+            admin_level_2:       { id:"4", zidx:"14" },
+            admin_level_1:       { id:"5", zidx:"13" },
+            admin_level_0:       { id:"6", zidx:"12" }
         },
         modis: {
             lstd: { id: "MOD11C3_0_LSTD" },

@@ -50,7 +50,7 @@ const drawOutbreaksChart = (data) => {
     let startDate  = moment(moment(document.querySelector('#startdate').value,'DD/MM/YYYY').toDate()).format('MM-YYYY');
     // let endDate    = moment(moment(document.querySelector('#enddate').value,'DD/MM/YYYY').toDate()).format('MM-YYYY');
 
-    let timeWindowEndString = document.querySelector("#timewindow-info").textContent.split(' - ')[1]
+    let timeWindowEndString = document.querySelector("#timewindow-info").textContent.split(' - ')[1];
     let timeWindowEndDate   = moment(timeWindowEndString,'MMMM YYYY').format('MM-YYYY');
     // console.log(timeWindowEndDate)
 

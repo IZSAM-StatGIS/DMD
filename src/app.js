@@ -20,6 +20,7 @@ import './js/chart-otb';
 import './js/filters';
 import './js/time';
 import './js/lists';
+import './js/layers';
 
 // Split Grid configuration
 Split({
