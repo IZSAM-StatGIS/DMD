@@ -1,0 +1,72 @@
+<form>
+    <div class="row form-group">
+        <div class="col-12">
+            <select id="disease" class="selectpicker" data-width="100%" 
+                    data-header="Disease" data-actions-box="false"
+                    data-style="btn-sm btn-outline-dark" data-none-selected-text="Disease"
+                    multiple>
+                <option value="CCHF">CCHF</option>
+                <option value="RVF">RVF</option>
+                <option value="SBV">SBV</option>
+                <option value="WND">WND</option>
+            </select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-12">
+            <select id="species" class="selectpicker" data-width="100%" data-size="5"
+                    data-header="Species" data-actions-box="false" data-live-search="true"
+                    data-style="btn-sm btn-outline-dark" data-none-selected-text="Species"
+                    multiple>
+                
+            </select>
+        </div>
+    </div>
+    <div class="row row form-group">
+        <div class="col-12">
+            <select id="subtype" class="selectpicker" data-width="100%" data-size="5"
+                    data-header="Subtype" data-actions-box="false" data-live-search="true"
+                    data-style="btn-sm btn-outline-dark" data-none-selected-text="Subtype"
+                    multiple>
+                
+            </select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-12">
+            <select id="country" class="selectpicker" data-width="100%" data-size="5"
+                    data-header="Country" data-actions-box="false" data-live-search="true"
+                    data-style="btn-sm btn-outline-dark" data-none-selected-text="Country"
+                    multiple>
+                
+            </select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-12">
+            <select id="source" class="selectpicker" data-width="100%" data-size="2"
+                    data-header="Source of the information" data-actions-box="false"
+                    data-style="btn-sm btn-outline-dark" data-none-selected-text="Source of the information"
+                    multiple>
+                <option value="OFFICIAL">OFFICIAL</option>
+                <option value="NOT OFFICIAL">NOT OFFICIAL</option>
+            </select>
+        </div>
+    </div>
+    <div class="row row form-group">
+        <div class="col-6">
+            <input type="text" id="startdate" class="form-control form-control-sm btn-outline-dark" placeholder="Start date">
+        </div>
+        <div class="col-6">
+            <input type="text" id="enddate" class="form-control form-control-sm btn-outline-dark" placeholder="End date">
+        </div>
+    </div>
+    <div class="row row form-group">
+        <div class="col-6">
+            <button id="set-filters-btn" class="btn btn-dark btn-block"><i class="fas fa-check"></i> Set Filters</button>
+        </div>
+        <div class="col-6">
+            <button id="reset-filters-btn" class="btn btn-dark btn-block"><i class="fas fa-undo-alt"></i> Reset</button>
+        </div>
+    </div>
+</form>

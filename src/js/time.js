@@ -4,24 +4,17 @@ import moment from 'moment';
 import { generateMonthYearRange } from './utils';
 import { setFilters } from './filters';
 
-const time_flt_info = document.querySelector('#timefilter-info');
-const time_win_info = document.querySelector('#timewindow-info');
-
-const setTimeFilter = () => {
+// Time Filter Info Panel
+const setTimePanel = () => {
     let start = moment(document.querySelector('#startdate').value, 'DD/MM/YYYY').toDate();
     let end   = moment(document.querySelector('#enddate').value, 'DD/MM/YYYY').toDate();
-    time_flt_info.innerHTML = `${ moment(start).format('MMMM YYYY')} - ${moment(end).format('MMMM YYYY') }`;
-
+    document.querySelector('#timefilter-info').innerHTML = `${ moment(start).format('MMMM YYYY')} - ${moment(end).format('MMMM YYYY') }`;
+    document.querySelector('#timewindow-info').innerHTML = `${ moment(start).format('MMMM YYYY')} - ${moment(end).format('MMMM YYYY') }`;
     createSlider();
 };
 
-const setTimeWindow = () => {
-    let start = moment(document.querySelector('#startdate').value, 'DD/MM/YYYY').toDate();
-    let end   = moment(document.querySelector('#enddate').value, 'DD/MM/YYYY').toDate();
-    time_win_info.innerHTML = `${ moment(start).format('MMMM YYYY')} - ${moment(end).format('MMMM YYYY') }`;
-};
-
-var slider = document.querySelector('#slider');
+// Creazione slider
+let slider = document.querySelector('#slider');
 
 const createSlider = () => {
 
@@ -45,7 +38,7 @@ const createSlider = () => {
     }
     rangers['max'] = moment(sliderend,'MM-YYYY').valueOf();
 
-    // Crea slider
+    // Slider
     noUiSlider.create(slider, {
         start: moment(sliderend,'MM-YYYY').valueOf(),
         step: sliderrange.length,
@@ -56,31 +49,43 @@ const createSlider = () => {
             filter: function (value, type) {
                 if (type === 0) {
                     return -1;
+                } else {
+                    let mesi_per_pips = []
+                    if (sliderrange.length <= 10){
+                        mesi_per_pips = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+                    } else if (sliderrange.length >= 11 && sliderrange.length <= 24){
+                        mesi_per_pips = ['01','03','05','07','09','11'];
+                    } else if (sliderrange.length >= 25 && sliderrange.length <= 36) {
+                        mesi_per_pips = ['06','12'];
+                    } else {
+                        mesi_per_pips = ['01'];
+                    }
+                    // Crea pip con label per i mesi specificati nell'array variabile in base al range
+                    if (mesi_per_pips.includes(moment(value).format('MM'))){
+                        return 1;
+                    }
                 }
             },
             format:{
                 to: function(value){
-                    return moment(value).format('MM/YYYY')
+                    return moment(value).format('MMM YY')
                 }
             },
-            density:4
+            density: -1
         }
     });
 
-    // On Update
+    // Slider Set event
     slider.noUiSlider.on('set', function (values, handle){
         // console.log(values)
-        
         let start = moment(document.querySelector('#startdate').value, 'DD/MM/YYYY').toDate();
-        time_win_info.innerHTML = `${ moment(start).format('MMMM YYYY')} - ${moment(parseInt(values)).format('MMMM YYYY') }`;
-
-        // Filter data in dashboard
+        let end = parseInt(values);
+        document.querySelector('#timewindow-info').innerHTML = `${ moment(start).format('MMMM YYYY')} - ${moment(end).format('MMMM YYYY') }`;
+        // Lancia il filtro passando il parametro opzionale
         let endsliderdate = moment(parseInt(values)).endOf('month').format('DD/MM/YYYY');
         setFilters( endsliderdate );
     });
     
 }
 
-
-
-export { setTimeWindow, setTimeFilter }
+export { setTimePanel }

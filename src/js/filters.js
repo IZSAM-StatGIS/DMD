@@ -2,7 +2,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import { Datepicker } from 'vanillajs-datepicker';
 import { getOutbreaks, getDistribution } from './data';
-import { setTimeWindow, setTimeFilter } from './time';
+import { setTimePanel } from './time';
 
 
 // Selezione di tutte le malattie all'avvio
@@ -90,8 +90,7 @@ const setFilters = (sliderend) => {
     // Set time filter and window info panel
     // ****************************************************************************
     if (sliderend === undefined) {
-        setTimeFilter();
-        setTimeWindow();
+        setTimePanel();
     }
 }
 
@@ -119,9 +118,6 @@ $('#reset-filters-btn').click((e)=>{
     datepicker_end.setDate(end_date_input.value);
     // Set Filters
     setFilters();
-    // Reset time filter and window info panel
-    // setTimeFilter();
-    // setTimeWindow();
 });
 
 export { setFilters }

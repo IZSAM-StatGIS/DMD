@@ -12,92 +12,23 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#maps-tab" data-toggle="tab">
-                <i class="fas fa-layer-group fa-lg fa-fw"></i> Maps
+            <a class="nav-link" href="#layers-tab" data-toggle="tab">
+                <i class="fas fa-layer-group fa-lg fa-fw"></i> Layers
             </a>
         </li>
     </ul>
     <!-- Bottom Tab panes -->
     <div class="tab-content mt-1 p-2">
         <div class="tab-pane active" id="filters-tab" role="tabpanel">
-            <form>
-                <div class="row form-group">
-                    <div class="col-12">
-                        <select id="disease" class="selectpicker" data-width="100%" 
-                                data-header="Disease" data-actions-box="false"
-                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Disease"
-                                multiple>
-                            <option value="CCHF">CCHF</option>
-                            <option value="RVF">RVF</option>
-                            <option value="SBV">SBV</option>
-                            <option value="WND">WND</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-12">
-                        <select id="species" class="selectpicker" data-width="100%" data-size="5"
-                                data-header="Species" data-actions-box="false" data-live-search="true"
-                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Species"
-                                multiple>
-                            
-                        </select>
-                    </div>
-                </div>
-                <div class="row row form-group">
-                    <div class="col-12">
-                        <select id="subtype" class="selectpicker" data-width="100%" data-size="5"
-                                data-header="Subtype" data-actions-box="false" data-live-search="true"
-                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Subtype"
-                                multiple>
-                            
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-12">
-                        <select id="country" class="selectpicker" data-width="100%" data-size="5"
-                                data-header="Country" data-actions-box="false" data-live-search="true"
-                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Country"
-                                multiple>
-                            
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-12">
-                        <select id="source" class="selectpicker" data-width="100%" data-size="2"
-                                data-header="Source of the information" data-actions-box="false"
-                                data-style="btn-sm btn-outline-dark" data-none-selected-text="Source of the information"
-                                multiple>
-                            <option value="OFFICIAL">OFFICIAL</option>
-                            <option value="NOT OFFICIAL">NOT OFFICIAL</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row row form-group">
-                    <div class="col-6">
-                        <input type="text" id="startdate" class="form-control form-control-sm btn-outline-dark" placeholder="Start date">
-                    </div>
-                    <div class="col-6">
-                        <input type="text" id="enddate" class="form-control form-control-sm btn-outline-dark" placeholder="End date">
-                    </div>
-                </div>
-                <div class="row row form-group">
-                    <div class="col-6">
-                        <button id="set-filters-btn" class="btn btn-dark btn-block"><i class="fas fa-check"></i> Set Filters</button>
-                    </div>
-                    <div class="col-6">
-                        <button id="reset-filters-btn" class="btn btn-dark btn-block"><i class="fas fa-undo-alt"></i> Reset</button>
-                    </div>
-                </div>
-            </form>
+            <!-- Filter form -->
+            <include src="./sidebar_filter_form.html"></include>
         </div>
         <div class="tab-pane" id="environment-tab" role="tabpane">
             Environmental Analysis
         </div>
-        <div class="tab-pane" id="maps-tab" role="tabpane">
-            Maps
+        <div class="tab-pane" id="layers-tab" role="tabpane">
+            <!-- Layers -->
+            <include src="./sidebar_layers.html"></include>
         </div>
     </div>
 </sidebar>
