@@ -114,6 +114,7 @@ const activateModis = (selected_modis) => {
   modisLayer = new ImageLayer({
     source: modisSource
   });
+  modisLayer.set('name','MODIS');
   modisLayer.setZIndex(11);
   let modisOpacity = document.querySelector('#modis-opacity-slider').value / 10
   modisLayer.setOpacity(modisOpacity);
@@ -136,7 +137,16 @@ const updateModis = () => {
   let modisstart   = moment('01 '+modisdateStr,'DD MMMM YYYY').valueOf();
   let modisend     = moment('01 '+modisdateStr,'DD MMMM YYYY').add(1,'month').valueOf();
   let modisinterval= modisstart.toString()+","+modisend.toString();
-  modisLayer.getSource().updateParams({TIME:modisinterval});
+  let activeLayers = map.getLayers();
+  activeLayers.forEach(layer => {
+    if (layer.get('name') == 'MODIS') {
+      // console.log(layer.get('name'))
+      modisLayer.getSource().updateParams({TIME:modisinterval});
+    } else {
+      // console.log('Nessun MODIS sulla mappa')
+    }
+  })
+  
 };
 
 const deactivateModis = () => {

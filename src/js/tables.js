@@ -19,8 +19,8 @@ const populateOutbreaksGrid = (data) => {
             {title:"Admin unit", field:"ADMIN_NAME"},
             {title:"Source", field:"DESC_SOURCE"},
             {title:"Outbreak", field:"ID_OUTBREAK"},
-            {title:"Start date", field:"DATE_OF_START_OF_THE_EVENT", formatter: grid_dateFormatter },
-            {title:"Confirm date", field:"DATE_OF_1ST_CONFIRMATION", formatter: grid_dateFormatter },
+            {title:"Start date", field:"DATE_OF_START_OF_THE_EVENT", formatter: grid_dateFormatter, accessorParams:{}, accessor:dateAccessor },
+            {title:"Confirm date", field:"DATE_OF_1ST_CONFIRMATION", formatter: grid_dateFormatter, accessorParams:{}, accessor:dateAccessor },
             {title:"Disease", field:"DISEASE_DESC"},
             {title:"Species", field:"DESC_SPECIE"},
             {title:"Subtype", field:"DESC_SUBTYPE"},
@@ -52,7 +52,15 @@ const populateOutbreaksGrid = (data) => {
 
 };
 
+let distributionGrid;
 const populateDistributionGrid = (data) => {
+
+    let tabledata = data.features.map(e => e.properties);
+    let tableheight = $("bottombar").height() - 42;
+
+    outbreaksGrid = new Tabulator("#distribution-grid", {
+
+    });
 
 };
 
@@ -62,6 +70,19 @@ const grid_dateFormatter = (cell, formatterParams, onRendered) => {
     // onRendered - function to call when the formatter has been rendered
 	if ( moment( cell.getValue() ).isValid()) {
 		return moment( cell.getValue() ).format("DD MMM YYYY");
+	} else {
+		return '-';
+	}
+}
+
+var dateAccessor = function(value, data, type, params, column){
+	//value - original value of the cell
+	//data - the data for the row
+	//type - the type of access occurring  (data|download|clipboard)
+	//params - the accessorParams object passed from the column definition
+    //column - column component for the column this accessor is bound to
+    if ( moment( value ).isValid()) {
+		return moment( value ).format("DD/MM/YYYY");
 	} else {
 		return '-';
 	}

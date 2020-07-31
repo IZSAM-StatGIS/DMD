@@ -3,7 +3,7 @@ import noUiSlider from 'nouislider'
 import moment from 'moment';
 import { generateMonthYearRange } from './utils';
 import { setFilters } from './filters';
-import { updateModis } from './map';
+import { activateModis, updateModis } from './map';
 
 // Time Filter Info Panel
 const setTimePanel = () => {
@@ -90,5 +90,17 @@ const createSlider = () => {
     });
     
 }
+
+// Timeline Panel
+const timelineBtn = document.querySelector("#timeline-btn");
+const timelinePanel = document.querySelector("#timeline-panel");
+timelineBtn.addEventListener('click',(e)=>{
+    // e.preventDefault()
+    if (timelinePanel.style.visibility == 'hidden'){
+        timelinePanel.style.visibility = 'visible'
+    } else {
+        timelinePanel.style.visibility = 'hidden'
+    }    
+});
 
 export { setTimePanel }

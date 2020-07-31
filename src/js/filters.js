@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Datepicker } from 'vanillajs-datepicker';
 import { getOutbreaks, getDistribution } from './data';
 import { setTimePanel } from './time';
+import { updateModis } from './map';
 
 
 // Selezione di tutte le malattie all'avvio
@@ -92,6 +93,9 @@ const setFilters = (sliderend) => {
     if (sliderend === undefined) {
         setTimePanel();
     }
+    // Aggiorna modis se presente
+    // ****************************************************************************
+    updateModis();
 }
 
 setFilters();
