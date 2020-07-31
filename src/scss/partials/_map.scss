@@ -1,5 +1,5 @@
 .ol-control {
-    border-radius: 1px !important;
+    border-radius: 0px !important;
     padding: 0px !important;
 }
 
@@ -9,6 +9,7 @@
     width: 1.575em !important;
     background-color: $app-dark !important;
     opacity:0.85 !important;
+    border-radius: 0px !important;
 }
 
 .ol-control-button, .ol-zoom-in, .ol-zoom-out {
@@ -48,4 +49,16 @@
 #timeline-panel {
     min-width: 550px;
     border-left: 3px solid $app-dark;
+}
+
+.ol-custom-fullext {
+    z-index: 1000;
+    top: 5em;
+    left: 0.5em;
+}
+
+.ol-custom-select {
+    z-index: 1000;
+    top: 7.5em;
+    left: 0.5em;
 }

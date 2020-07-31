@@ -35,7 +35,7 @@ const populateOutbreaksGrid = (data) => {
         ],
         footerElement:  "<div style='display:flex;align-items:center;justify-content:space-between;' id='otb-grid-footer'>"+
                             "<div><span id='otb-grid-count'></span>&nbsp;Outbreaks found</div>"+
-                            "<a href='#' id='otb-grid-download'><i class='fas fa-download'></i> Download as CSV</a>"+
+                            "<button id='otb-grid-download' class='btn btn-sm btn-light'><i class='fas fa-file-csv fa-lg text-success'></i> Download</button>"+
                         "</div>",
         rowClick: function(e, row){ 
             alert("Row " + row.getData().ID_OUTBREAK + " Clicked!!!!");

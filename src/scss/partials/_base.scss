@@ -34,7 +34,7 @@ html, body {
 
 /* Stili customizzati jsPanel */
 /* ******************************/
-.jsPanel { z-index: 1040 !important; }
+.jsPanel { z-index: 1040 !important; border-radius: 0px !important; }
 .jsPanel .jsPanel-hdr { line-height: 2.1; }
 .jsPanel .jsPanel-ftr.active { padding: 6px 8px; }
 .jsPanel-depth-3 { box-shadow: none; border-radius: 2px; }
