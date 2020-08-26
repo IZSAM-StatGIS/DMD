@@ -2,6 +2,8 @@ import $ from 'jquery';
 import moment from 'moment';
 import Tabulator from 'tabulator-tables';
 
+import { outbreaks, selectedFeatures } from './map';
+
 let outbreaksGrid;
 const populateOutbreaksGrid = (data) => {
 
@@ -38,8 +40,25 @@ const populateOutbreaksGrid = (data) => {
                             "<button id='otb-grid-download' class='btn btn-sm btn-light'><i class='fas fa-file-csv fa-lg text-success'></i> Download</button>"+
                         "</div>",
         rowClick: function(e, row){ 
-            alert("Row " + row.getData().ID_OUTBREAK + " Clicked!!!!");
+            row.toggleSelect();
         },
+        rowSelected: function(row){
+            // Seleziona feature corrispondenti sulla mappa
+            outbreaks.getSource().getFeatures().forEach(feature => {
+                if (feature.get('ID_OUTBREAK') == row.getData().ID_OUTBREAK){
+                    selectedFeatures.push(feature);
+                }
+            });
+        },
+        rowDeselected: function(row){
+            // Deseleziona feature corrispondenti sulla mappa
+            
+            selectedFeatures.getArray().map(feature => {
+                if (feature.get('ID_OUTBREAK') == row.getData().ID_OUTBREAK){
+                    selectedFeatures.remove(feature)
+                }
+            })
+        }
     });
 
     outbreaksGrid.replaceData(tabledata);

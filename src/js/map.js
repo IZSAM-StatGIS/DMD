@@ -2,8 +2,9 @@ import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import { fromLonLat, getTransform } from 'ol/proj';
+import {DragBox, Select} from 'ol/interaction';
 import {OSM, ImageArcGISRest, TileArcGISRest} from 'ol/source';
-import XYZ from 'ol/source/XYZ'
+import XYZ from 'ol/source/XYZ';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
@@ -11,6 +12,7 @@ import { Group as LayerGroup, Tile as TileLayer, Image as ImageLayer } from 'ol/
 import { Fill, Stroke, Style, Text, Image, Circle } from 'ol/style';
 import moment from 'moment';
 import { server } from './data';
+import { outbreaksGrid } from './tables';
 
 // *********************************************************
 // Mappa
@@ -154,6 +156,77 @@ const deactivateModis = () => {
 };
 
 // *********************************************************
+// Selezione feature dal layer degli outbreaks
+// *********************************************************
+
+// Selezione click (una feature alla volta)
+const select = new Select();
+map.addInteraction(select);
+let selectedFeatures = select.getFeatures();
+
+// Selezione dragbox (feature multiple)
+const dragBox = new DragBox();
+map.addInteraction(dragBox);
+dragBox.setActive(false);
+
+document.querySelector('#select-btn').addEventListener('click',(e)=>{
+  dragBox.setActive(true);
+});
+
+document.querySelector('#deselect-btn').addEventListener('click',(e)=>{
+  selectedFeatures.clear();
+  outbreaksGrid.deselectRow();
+});
+
+dragBox.on('boxstart', () => {
+  selectedFeatures.clear();
+  outbreaksGrid.deselectRow();
+});
+
+dragBox.on('boxend',() => {
+  
+  let extent = dragBox.getGeometry().getExtent();
+  outbreaks.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
+    selectedFeatures.push(feature);
+  });
+
+  dragBox.setActive(false);
+});
+
+selectedFeatures.on(['add', 'remove'], function () {
+
+  let id_outbreaks = selectedFeatures.getArray().map(function (feature) {
+    return feature.get('ID_OUTBREAK');
+  });
+
+  if (id_outbreaks.length > 0) {
+    console.log(id_outbreaks.join(', '));
+    id_outbreaks.forEach(otb => {
+      outbreaksGrid.selectRow(outbreaksGrid.getRows().filter(row => row.getData().ID_OUTBREAK == otb));
+    });
+    
+  } else {
+    console.log('No outbreaks selected');
+    outbreaksGrid.deselectRow();
+  }
+});
+
+// *********************************************************
+// On pointer move
+// *********************************************************
+map.on('pointermove', function(e) {
+	if (e.dragging) return;
+    var pixel = e.map.getEventPixel(e.originalEvent);
+    var hit = e.map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+    	if (layer){
+    		return layer.get('name') === 'Outbreaks' || layer.get('name') === 'Distribution';
+    	}
+    });
+    e.map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+});
+
+
+// *********************************************************
 // Basemap selector
 // *********************************************************
 document.querySelector("#basemap-selector").addEventListener('change', (e) => {
@@ -194,5 +267,5 @@ document.querySelector("#basemap-selector").addEventListener('change', (e) => {
 
 });
 
-export { map, outbreaks, distribution, modisLayer, activateModis, updateModis, deactivateModis };
+export { map, outbreaks, distribution, modisLayer, selectedFeatures, activateModis, updateModis, deactivateModis };
 
