@@ -194,21 +194,24 @@ dragBox.on('boxend',() => {
 });
 
 selectedFeatures.on(['add', 'remove'], function () {
-
   let id_outbreaks = selectedFeatures.getArray().map(function (feature) {
     return feature.get('ID_OUTBREAK');
   });
 
   if (id_outbreaks.length > 0) {
-    console.log(id_outbreaks.join(', '));
+    // console.log(id_outbreaks.join(', '));
     id_outbreaks.forEach(otb => {
       outbreaksGrid.selectRow(outbreaksGrid.getRows().filter(row => row.getData().ID_OUTBREAK == otb));
     });
-    
+    document.querySelector('#otb-grid-download-selected').classList.remove('disabled');
+    document.querySelector('#otb-grid-download-selected-env').classList.remove('disabled');
   } else {
-    console.log('No outbreaks selected');
+    // console.log('No outbreaks selected');
     outbreaksGrid.deselectRow();
+    document.querySelector('#otb-grid-download-selected').classList.add('disabled');
+    document.querySelector('#otb-grid-download-selected-env').classList.add('disabled');
   }
+  document.querySelector('#otb-grid-selected-count').innerHTML = outbreaksGrid.getSelectedData().length;
 });
 
 // *********************************************************

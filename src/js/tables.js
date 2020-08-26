@@ -36,9 +36,17 @@ const populateOutbreaksGrid = (data) => {
             {column:"DATE_OF_START_OF_THE_EVENT", dir:"desc"}
         ],
         footerElement:  "<div style='display:flex;align-items:center;justify-content:space-between;' id='otb-grid-footer'>"+
-                            "<div><span id='otb-grid-count'></span>&nbsp;Outbreaks found</div>"+
-                            "<button id='otb-grid-download' class='btn btn-sm btn-light'><i class='fas fa-file-csv fa-lg text-success'></i> Download</button>"+
-                        "</div>",
+                            "<div><span id='otb-grid-count'></span>&nbsp;Outbreaks found, <span id='otb-grid-selected-count'>0</span> selected</div>"+
+                            "<div class='btn-group dropup'>"+
+                                "<button class='btn btn-sm btn-light dropdown-toggle' data-toggle='dropdown'><i class='fas fa-file-csv fa-lg text-success'></i> Download</button>"+
+                                "<div class='dropdown-menu'>"+
+                                    "<a class='dropdown-item' href='#' id='otb-grid-download'>Oubreaks data</a>"+
+                                    "<div class='dropdown-divider' href='#'>Oubreaks data</div>"+
+                                    "<a class='dropdown-item disabled' href='#' id='otb-grid-download-selected'>Selected outbreaks data</a>"+
+                                    "<a class='dropdown-item disabled' href='#' id='otb-grid-download-selected-env'>Environmental data for selected outbreaks</a>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>", 
         rowClick: function(e, row){ 
             row.toggleSelect();
         },
@@ -49,15 +57,27 @@ const populateOutbreaksGrid = (data) => {
                     selectedFeatures.push(feature);
                 }
             });
+            $('#otb-grid-selected-count').html(outbreaksGrid.getSelectedData().length);
+            if (outbreaksGrid.getSelectedData().length > 0) {
+                $('#otb-grid-download-selected').removeClass('disabled');
+                $('#otb-grid-download-selected-env').removeClass('disabled');
+            }
         },
         rowDeselected: function(row){
             // Deseleziona feature corrispondenti sulla mappa
-            
             selectedFeatures.getArray().map(feature => {
                 if (feature.get('ID_OUTBREAK') == row.getData().ID_OUTBREAK){
                     selectedFeatures.remove(feature)
                 }
-            })
+            });
+            $('#otb-grid-selected-count').html(outbreaksGrid.getSelectedData().length);
+            if (outbreaksGrid.getSelectedData().length > 0) {
+                $('#otb-grid-download-selected').removeClass('disabled');
+                $('#otb-grid-download-selected-env').removeClass('disabled');
+            } else {
+                $('#otb-grid-download-selected').addClass('disabled');
+                $('#otb-grid-download-selected-env').addClass('disabled');
+            }
         }
     });
 
@@ -67,6 +87,14 @@ const populateOutbreaksGrid = (data) => {
 
     $('#otb-grid-download').click((e)=>{
         outbreaksGrid.download("csv", "outbreaks.csv", {delimiter: ","});
+    });
+
+    $('#otb-grid-download-selected').click((e)=>{
+        outbreaksGrid.download("csv", "outbreaks.csv", {delimiter: ","}, "selected");
+    });
+
+    $('#otb-grid-download-selected-env').click((e)=>{
+        // Apre finestra per selezione anno e modis
     });
 
 };
