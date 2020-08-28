@@ -40,10 +40,10 @@ const populateOutbreaksGrid = (data) => {
                             "<div class='btn-group dropup'>"+
                                 "<button class='btn btn-sm btn-light dropdown-toggle' data-toggle='dropdown'><i class='fas fa-file-csv fa-lg text-success'></i> Download</button>"+
                                 "<div class='dropdown-menu'>"+
-                                    "<a class='dropdown-item' href='#' id='otb-grid-download'>Oubreaks data</a>"+
+                                    "<button class='dropdown-item' href='#' id='otb-grid-download'>Oubreaks data</button>"+
                                     "<div class='dropdown-divider' href='#'>Oubreaks data</div>"+
-                                    "<a class='dropdown-item disabled' href='#' id='otb-grid-download-selected'>Selected outbreaks data</a>"+
-                                    "<a class='dropdown-item disabled' href='#' id='otb-grid-download-selected-env'>Environmental data for selected outbreaks</a>"+
+                                    "<button class='dropdown-item disabled' href='#' id='otb-grid-download-selected'>Selected outbreaks data</button>"+
+                                    "<button class='dropdown-item disabled' data-toggle='modal' data-target='#downloadModal' id='otb-grid-download-selected-env'>Environmental data for selected outbreaks</button>"+
                                 "</div>"+
                             "</div>"+
                         "</div>", 
@@ -91,10 +91,6 @@ const populateOutbreaksGrid = (data) => {
 
     $('#otb-grid-download-selected').click((e)=>{
         outbreaksGrid.download("csv", "outbreaks.csv", {delimiter: ","}, "selected");
-    });
-
-    $('#otb-grid-download-selected-env').click((e)=>{
-        // Apre finestra per selezione anno e modis
     });
 
 };
