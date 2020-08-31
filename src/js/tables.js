@@ -116,20 +116,19 @@ const grid_dateFormatter = (cell, formatterParams, onRendered) => {
 	} else {
 		return '-';
 	}
-}
+};
 
 var dateAccessor = function(value, data, type, params, column){
-	//value - original value of the cell
-	//data - the data for the row
-	//type - the type of access occurring  (data|download|clipboard)
-	//params - the accessorParams object passed from the column definition
-    //column - column component for the column this accessor is bound to
+	// value - original value of the cell
+	// data - the data for the row
+	// type - the type of access occurring  (data|download|clipboard)
+	// params - the accessorParams object passed from the column definition
+    // column - column component for the column this accessor is bound to
     if ( moment( value ).isValid()) {
 		return moment( value ).format("DD/MM/YYYY");
 	} else {
 		return '-';
 	}
-}
+};
 
-
-export { populateOutbreaksGrid, populateDistributionGrid, outbreaksGrid };
+export { populateOutbreaksGrid, populateDistributionGrid, outbreaksGrid, grid_dateFormatter, dateAccessor };

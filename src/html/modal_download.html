@@ -7,10 +7,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body bg-dark text-white">
+            <div class="modal-body bg-dark">
                 <div class="row form-group">
                     <div class="col-12">
-                        <select id="download_product" class="selectpicker" data-style="btn-sm btn-light" data-width="100%">
+                        <select id="env_download_product" class="selectpicker" data-style="btn-sm btn-light" data-width="100%">
                             <option value="lstd" selected>Day Land Surface Temperature</option>
                             <option value="lstn">Night Land Surface Temperature</option>
                             <option value="ndvi">Normalized Difference Vegetation Index (NDVI)</option>
@@ -20,23 +20,21 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-12">
-                        <select id="download_year" class="selectpicker" data-style="btn-sm btn-light" data-width="100%">
-                            <option value="2020" selected>2020</option>
-                            <option value="2019">2019</option>
-                            <option value="2018">2018</option>
-                            <option value="2017">2017</option>
+                        <select id="env_download_year" class="selectpicker" data-style="btn-sm btn-light" data-width="100%">
+                            <!-- Elenco ultimi 10 anni -->
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        Preview Table
+                        <p class="alert alert-info" id="environment-grid-info"></p>
+                        <table id="environment-grid" class="table-striped table-sm table-hover" style="font-size: 12px;"></table>
                     </div>
                 </div>
             </div>
             
             <div class="modal-footer bg-dark text-white">
-                <button class="btn btn-sm btn-light" id="download-env-data-btn"><i class="fas fa-arrow-circle-down"></i> Download</button>
+                <button class="btn btn-sm btn-light" id="download-env-data-btn"><i class="fas fa-arrow-circle-down"></i> Download Full Table</button>
             </div>
         </div>
     </div>
