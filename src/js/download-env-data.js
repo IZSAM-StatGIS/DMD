@@ -2,10 +2,16 @@ import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
 import Tabulator from 'tabulator-tables';
+import { server } from './data';
 import { selectedFeatures } from './map';
 import { grid_dateFormatter, dateAccessor } from './tables';
 
+const env_grid_info = document.querySelector('#environment-grid-info');
+
 $('#downloadModal').on('shown.bs.modal', function () {
+    if (envDataGrid) { envDataGrid.clearData(); }
+    env_grid_info.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Retrieving environmental data...';
+    $('#env_download_year').empty();
     downloadYearsList();
 });
 
@@ -32,7 +38,7 @@ const downloadYearsList = () => {
     setTimeout(()=>{ 
         $('#env_download_year').selectpicker('val',max);
         $('#env_download_year').selectpicker('refresh'); 
-    },250);
+    },100);
 
     setTimeout(()=>{
         showPreviewGrid();
@@ -76,7 +82,7 @@ const getModisValues = (product, year) => {
 
     // console.log(selected_outbreaks);
     
-    let url = "https://webgis.izs.it/arcgis/rest/services/Modis/";
+    let url = server.image+'/'
   
     if (product == 'lstd') {
       url += "MOD11C3_0_LSTD/ImageServer";
@@ -159,23 +165,22 @@ const getModisValues = (product, year) => {
     
 const showPreviewGrid = () => {
 
+    env_grid_info.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Retrieving environmental data...';
+    
     document.querySelector('#env_download_product').disabled = true;
     document.querySelector('#env_download_year').disabled = true;
     document.querySelector('#download-env-data-btn').disabled = true;
     $('#env_download_product,#env_download_year').selectpicker('refresh');
 
-    const env_grid_info = document.querySelector('#environment-grid-info');
     let prod = document.querySelector('#env_download_product').value;
     let year = document.querySelector('#env_download_year').value;
 
     let data = getModisValues(prod, year);
 
-    env_grid_info.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Retrieving environmental data...';
-
     setTimeout(()=>{
         // Crea tabella di preview da scaricare
         createEnvDataGrid(data);
-        env_grid_info.innerHTML = '<i class="fas fa-check text-success"></i> Environmental data for selected outbreaks';
+        env_grid_info.innerHTML = '<i class="fas fa-check text-success"></i> Environmental data for selected outbreaks [<strong>'+envDataGrid.getData().length+ '</strong> rows]';
         document.querySelector('#env_download_product').disabled = false;
         document.querySelector('#env_download_year').disabled = false;
         document.querySelector('#download-env-data-btn').disabled = false;
@@ -187,7 +192,6 @@ let envDataGrid;
 const createEnvDataGrid = (tableData) => {
     
     // console.log(tableData);
-
     envDataGrid = new Tabulator("#environment-grid", {
         height: 250, 
         data: tableData, //assign data to table

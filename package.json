@@ -32,6 +32,7 @@
     "chartjs": "^0.3.24",
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-zoom": "^0.7.5",
+    "data": "^0.6.1",
     "jquery": "^3.5.1",
     "jspanel4": "^4.11.0-beta",
     "lodash": "^4.17.19",
