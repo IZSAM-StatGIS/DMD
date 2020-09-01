@@ -97,7 +97,46 @@
         <!-- Environmental Analysis Tab content -->
         <!-- ================================== -->
         <div class="tab-pane" id="environment-tab" role="tabpane">
-            Select outbreaks on the map or on the table and run
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title">Selected outbreaks</h6>
+                    <div class="row form-group">
+                        <div class="col-12">
+                            <select id="otb-selector" class="selectpicker" data-style="btn-sm btn-outline-dark" data-width="100%"
+                                    data-size="5" disabled>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row form-group">
+                <div class="col-6">
+                    <button id="run-analysis-btn" class="btn btn-dark btn-block" disabled><i class="fas fa-play"></i> Run</button>
+                </div>
+                <div class="col-6">
+                    <button id="clear-analysis-btn" class="btn btn-dark btn-block" disabled><i class="fas fa-times"></i> Clear</button>
+                </div>
+            </div>
+
+            <div class="card mb-3" id="env-analysis-res-container">
+                <div class="card-body">
+                    <h6 class="card-title">Environmental analysis results</h6>
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a class="nav-link active" href="#pill-chart" data-toggle="tab">Chart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#pill-table" data-toggle="tab">Table</a></li>
+                    </ul>
+                    <div class="tab-content mt-2">
+                        <div class="tab-pane fade show active" id="pill-chart" role="tabpanel" aria-labelledby="home-tab">
+                            Satellite values chart... to-do
+                        </div>
+                        <div class="tab-pane fade" id="pill-table" role="tabpanel">
+                            Satellite values grid... to-do
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div> <!-- End tab -->
 
         <!-- Layers Tab content -->

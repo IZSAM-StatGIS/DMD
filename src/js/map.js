@@ -13,6 +13,7 @@ import { Fill, Stroke, Style, Text, Image, Circle } from 'ol/style';
 import moment from 'moment';
 import { server } from './data';
 import { outbreaksGrid } from './tables';
+import { populateSelectedOtbList } from './env-data-analysis';
 
 // *********************************************************
 // Mappa
@@ -191,6 +192,7 @@ dragBox.on('boxend',() => {
   });
 
   dragBox.setActive(false);
+
 });
 
 selectedFeatures.on(['add', 'remove'], function () {
@@ -212,6 +214,9 @@ selectedFeatures.on(['add', 'remove'], function () {
     document.querySelector('#otb-grid-download-selected-env').classList.add('disabled');
   }
   document.querySelector('#otb-grid-selected-count').innerHTML = outbreaksGrid.getSelectedData().length;
+
+  populateSelectedOtbList();
+  
 });
 
 // *********************************************************
