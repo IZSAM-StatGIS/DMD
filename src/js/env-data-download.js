@@ -102,7 +102,7 @@ const getModisValues = (product, year) => {
             params: {
                 geometry: '{"x":' + otb.lng + ',"y":' + otb.lat + '}',
                 geometryType: 'esriGeometryPoint',
-                spatialReference: '{"wkid":3857}',
+                spatialReference: '{"wkid":4326}',
                 mosaicRule: {
                     mosaicMethod: "esriMosaicAttributes",
                     where: "Timeref >= DATE '01/01/" + year + "' AND Timeref <= DATE '01/12/" + year + "'",
