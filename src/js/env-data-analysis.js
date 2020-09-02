@@ -2,11 +2,11 @@ import $, { data } from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
 import lodash from 'lodash';
-import Tabulator from 'tabulator-tables';
 import { server } from './data';
 import { selectedFeatures } from './map';
+import { envAnalysisResultsPanel, envAnalysisGrid, envAnalysisChart } from './env-data-analysis-results';
 
-$('#env-analysis-res-container').hide();
+// $('#env-analysis-res-container').hide();
 
 const populateSelectedOtbList = () => {
     $('#otb-selector').empty()
@@ -33,12 +33,12 @@ const populateSelectedOtbList = () => {
             document.querySelector('#otb-selector').disabled = false;
             document.querySelector('#analysis-type').disabled = false;
             document.querySelector('#run-analysis-btn').disabled = false;
-            document.querySelector('#clear-analysis-btn').disabled = false;
+            // document.querySelector('#clear-analysis-btn').disabled = false;
         } else {
             document.querySelector('#otb-selector').disabled = true;
             document.querySelector('#analysis-type').disabled = true;
             document.querySelector('#run-analysis-btn').disabled = true;
-            document.querySelector('#clear-analysis-btn').disabled = true;
+            // document.querySelector('#clear-analysis-btn').disabled = true;
         }
         $('#otb-selector, #analysis-type').selectpicker('refresh'); 
     },100);
@@ -112,49 +112,34 @@ $('#run-analysis-btn').click((e)=>{
     });
 
     setTimeout(()=>{
-        $('#env-analysis-res-container').show();   
-        showAnalysisGrid(data_arr); 
-    },250)
+        // $('#env-analysis-res-container').show();   
+        // Formattazione dei dati per grid e grafico
+        let data = [];
+        let grouped = lodash.groupBy(data_arr,'DATE');
+        lodash.forEach(grouped,(item, key) => {
+            let obj = { 
+                DATE: key, 
+                LSTD: item.filter(o => o.MODIS == 'LSTD')[0].VALUE,
+                LSTN: item.filter(o => o.MODIS == 'LSTN')[0].VALUE,
+                NDVI: item.filter(o => o.MODIS == 'NDVI')[0].VALUE,
+                EVI:  item.filter(o => o.MODIS == 'EVI' )[0].VALUE
+            }
+            data.push(obj);
+        });
+        if ($("#env-results-panel").is(":visible")){
+            envAnalysisChart(data);
+            envAnalysisGrid(data);
+        } else {
+            envAnalysisResultsPanel(data); 
+        }
+    },250);
 
 });
 
-const showAnalysisGrid = (data) => {
-    let tableData = [];
-    let grouped = lodash.groupBy(data,'DATE');
-    lodash.forEach(grouped,(item, key) => {
-        let obj = { 
-            DATE: key, 
-            LSTD: item.filter(o => o.MODIS == 'LSTD')[0].VALUE,
-            LSTN: item.filter(o => o.MODIS == 'LSTN')[0].VALUE,
-            NDVI: item.filter(o => o.MODIS == 'NDVI')[0].VALUE,
-            EVI:  item.filter(o => o.MODIS == 'EVI' )[0].VALUE
-        }
-        tableData.push(obj);
-    })
-    // console.log(tableData);
-    let envAnalysisGrid = new Tabulator("#env-analysis-grid", {
-        height: 205, 
-        data: tableData,
-        placeholder: "No Data Available",
-        layout: "fitColumns",
-        columns:[ 
-            {title:"Date", field:"DATE"},
-            {title:"LSTD", field:"LSTD"},
-            {title:"LSTN", field:"LSTN"},
-            {title:"NDVI", field:"NDVI"},
-            {title:"EVI",  field:"EVI"},
-        ],
-        initialSort:[
-            {column:"DATE", dir:"asc"}
-        ]
-    });
 
-    envAnalysisGrid.replaceData(tableData);
-
-};
-
+/*
 $('#clear-analysis-btn').click((e)=>{
     $('#env-analysis-res-container').hide();
-});
+});*/
 
 export { populateSelectedOtbList };

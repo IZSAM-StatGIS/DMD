@@ -22,6 +22,7 @@ import './js/time';
 import './js/lists';
 import './js/layers';
 import './js/env-data-analysis';
+import './js/env-data-analysis-results';
 import './js/env-data-download';
 
 // Split Grid configuration
