@@ -3,6 +3,7 @@ import moment from 'moment';
 import Tabulator from 'tabulator-tables';
 
 import { outbreaks, selectedFeatures } from './map';
+import tippy from 'tippy.js';
 
 let outbreaksGrid;
 const populateOutbreaksGrid = (data) => {
@@ -38,8 +39,8 @@ const populateOutbreaksGrid = (data) => {
         footerElement:  "<div style='display:flex;align-items:center;justify-content:space-between;' id='otb-grid-footer'>"+
                             "<div><span id='otb-grid-count'></span>&nbsp;Outbreaks found, <span id='otb-grid-selected-count'>0</span> selected</div>"+
                             "<div class='btn-group dropup'>"+
-                                "<button class='btn btn-sm btn-outline-dark' id='otb-grid-show-selected'><i class='fas fa-bars fa-lg'></i> Show selected</button>"+
-                                "<button class='btn btn-sm btn-outline-dark' id='otb-grid-show-all'><i class='fas fa-bars fa-lg'></i> Show all</button>"+
+                                "<button class='btn btn-sm btn-outline-dark' id='otb-grid-show-all'><i class='fas fa-align-justify fa-lg'></i> All</button>"+
+                                "<button class='btn btn-sm btn-outline-dark' id='otb-grid-show-selected'><i class='fas fa-grip-lines fa-lg'></i> Selected</button>"+
                                 "<button class='btn btn-sm btn-outline-dark dropdown-toggle' data-toggle='dropdown'><i class='fas fa-file-csv fa-lg'></i> Download</button>"+
                                 "<div class='dropdown-menu'>"+
                                     "<button class='dropdown-item' href='#' id='otb-grid-download'>Oubreaks data</button>"+
@@ -104,11 +105,13 @@ const populateOutbreaksGrid = (data) => {
             ]);
         }
     });
+    tippy('#otb-grid-show-selected', {content:'Display selected records only'})
 
+    
     $('#otb-grid-show-all').click((e)=>{
-        outbreaksGrid.clearFilter()
+        outbreaksGrid.clearFilter();
     });
-
+    tippy('#otb-grid-show-all', {content:'Display all records'})
 };
 
 let distributionGrid;

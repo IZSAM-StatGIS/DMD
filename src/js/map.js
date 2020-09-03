@@ -176,6 +176,7 @@ map.addInteraction(dragBox);
 dragBox.setActive(false);
 
 document.querySelector('#select-btn').addEventListener('click',(e)=>{
+  document.documentElement.style.cursor = "crosshair";
   dragBox.setActive(true);
 });
 
@@ -200,6 +201,8 @@ dragBox.on('boxend',() => {
   dragBox.setActive(false);
   select.setActive(false);
 
+  document.documentElement.style.cursor = "default";
+
 });
 
 selectedFeatures.on(['add', 'remove'], function () {
@@ -217,6 +220,7 @@ selectedFeatures.on(['add', 'remove'], function () {
   } else {
     // console.log('No outbreaks selected');
     outbreaksGrid.deselectRow();
+    outbreaksGrid.clearFilter();
     document.querySelector('#otb-grid-download-selected').classList.add('disabled');
     document.querySelector('#otb-grid-download-selected-env').classList.add('disabled');
   }

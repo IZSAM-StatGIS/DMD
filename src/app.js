@@ -10,6 +10,9 @@ $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 // Tabulator CSS
 import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap4.min.css';
+// Tippy
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 // Split GRID
 import Split from 'split-grid';
 
@@ -24,6 +27,9 @@ import './js/layers';
 import './js/env-data-analysis';
 import './js/env-data-analysis-results';
 import './js/env-data-download';
+
+// Tooltips
+tippy('[data-tippy-content]');
 
 // Split Grid configuration
 Split({
