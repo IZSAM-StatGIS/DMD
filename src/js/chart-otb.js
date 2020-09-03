@@ -107,7 +107,8 @@ const drawOutbreaksChart = (data) => {
                     ticks:{
                         fontColor:'#4B515D',
                         stepSize: 1,
-                        beginAtZero: true
+                        beginAtZero: true,
+                        stepSize: 5,
                     }
                 }],
                 xAxes:[{

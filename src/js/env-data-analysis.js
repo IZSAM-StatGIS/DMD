@@ -6,8 +6,6 @@ import { server } from './data';
 import { selectedFeatures } from './map';
 import { envAnalysisResultsPanel, envAnalysisGrid, envAnalysisChart } from './env-data-analysis-results';
 
-// $('#env-analysis-res-container').hide();
-
 const populateSelectedOtbList = () => {
     $('#otb-selector').empty()
     let select = document.querySelector('#otb-selector');
@@ -31,16 +29,14 @@ const populateSelectedOtbList = () => {
     setTimeout(()=>{ 
         if (selected_outbreaks.length > 0){
             document.querySelector('#otb-selector').disabled = false;
-            document.querySelector('#analysis-type').disabled = false;
+            document.getElementsByName('analysis-type').forEach(e => e.disabled = false);
             document.querySelector('#run-analysis-btn').disabled = false;
-            // document.querySelector('#clear-analysis-btn').disabled = false;
         } else {
             document.querySelector('#otb-selector').disabled = true;
-            document.querySelector('#analysis-type').disabled = true;
+            document.getElementsByName('analysis-type').forEach(e => e.disabled = true);
             document.querySelector('#run-analysis-btn').disabled = true;
-            // document.querySelector('#clear-analysis-btn').disabled = true;
         }
-        $('#otb-selector, #analysis-type').selectpicker('refresh'); 
+        $('#otb-selector').selectpicker('refresh'); 
     },100);
 };
 
@@ -53,7 +49,7 @@ $('#run-analysis-btn').click((e)=>{
 
     // console.log(`${sel_lng}, ${sel_lat}, ${sel_otb}, ${sel_date}`);
 
-    let analysis = $('#analysis-type').val();
+    let analysis = $("input[name='analysis-type']:checked").val();
     let analysis_end_month;
     if (analysis == 'otb-start') {
         analysis_end_month = sel_date;

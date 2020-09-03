@@ -38,7 +38,9 @@ const populateOutbreaksGrid = (data) => {
         footerElement:  "<div style='display:flex;align-items:center;justify-content:space-between;' id='otb-grid-footer'>"+
                             "<div><span id='otb-grid-count'></span>&nbsp;Outbreaks found, <span id='otb-grid-selected-count'>0</span> selected</div>"+
                             "<div class='btn-group dropup'>"+
-                                "<button class='btn btn-sm btn-light dropdown-toggle' data-toggle='dropdown'><i class='fas fa-file-csv fa-lg text-success'></i> Download</button>"+
+                                "<button class='btn btn-sm btn-outline-dark' id='otb-grid-show-selected'><i class='fas fa-bars fa-lg'></i> Show selected</button>"+
+                                "<button class='btn btn-sm btn-outline-dark' id='otb-grid-show-all'><i class='fas fa-bars fa-lg'></i> Show all</button>"+
+                                "<button class='btn btn-sm btn-outline-dark dropdown-toggle' data-toggle='dropdown'><i class='fas fa-file-csv fa-lg'></i> Download</button>"+
                                 "<div class='dropdown-menu'>"+
                                     "<button class='dropdown-item' href='#' id='otb-grid-download'>Oubreaks data</button>"+
                                     "<div class='dropdown-divider' href='#'>Oubreaks data</div>"+
@@ -91,6 +93,20 @@ const populateOutbreaksGrid = (data) => {
 
     $('#otb-grid-download-selected').click((e)=>{
         outbreaksGrid.download("csv", "outbreaks.csv", {delimiter: ","}, "selected");
+    });
+
+    $('#otb-grid-show-selected').click((e)=>{
+        let selectedRows = outbreaksGrid.getSelectedData();
+        if (selectedRows.length > 0) {
+            let filter_values_arr = selectedRows.map(row => row.ID_OUTBREAK)
+            outbreaksGrid.setFilter([
+                {field:"ID_OUTBREAK", type:"in", value:filter_values_arr}
+            ]);
+        }
+    });
+
+    $('#otb-grid-show-all').click((e)=>{
+        outbreaksGrid.clearFilter()
     });
 
 };

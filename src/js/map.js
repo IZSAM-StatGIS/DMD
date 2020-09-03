@@ -160,10 +160,15 @@ const deactivateModis = () => {
 // Selezione feature dal layer degli outbreaks
 // *********************************************************
 
-// Selezione click (una feature alla volta)
+// Selezione 
+//    Per attivare anche la selezione col click sul punto (una feature alla volta) lasciare la selezione attiva in modo predefinito 
+//    rimuovendo select.setActive(false) e select.setActive(true)
+//    N.B. E' comunque possibile selezionare un singolo outbreak utilizzando il dragbox su un solo elemento
+
 const select = new Select();
 map.addInteraction(select);
 let selectedFeatures = select.getFeatures();
+select.setActive(false);
 
 // Selezione dragbox (feature multiple)
 const dragBox = new DragBox();
@@ -182,16 +187,18 @@ document.querySelector('#deselect-btn').addEventListener('click',(e)=>{
 dragBox.on('boxstart', () => {
   selectedFeatures.clear();
   outbreaksGrid.deselectRow();
+  select.setActive(true);
 });
 
 dragBox.on('boxend',() => {
-  
+
   let extent = dragBox.getGeometry().getExtent();
   outbreaks.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
     selectedFeatures.push(feature);
   });
 
   dragBox.setActive(false);
+  select.setActive(false);
 
 });
 

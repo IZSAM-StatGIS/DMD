@@ -2,7 +2,6 @@ import { jsPanel } from 'jspanel4/es6module/jspanel.js';
 import 'jspanel4/es6module/extensions/modal/jspanel.modal.js';
 import 'jspanel4/dist/jspanel.css'
 import Tabulator from 'tabulator-tables';
-import moment from 'moment';
 import 'chart.js';
 
 const envAnalysisGrid = (data) => {
@@ -28,6 +27,12 @@ const envAnalysisGrid = (data) => {
 
 let envChart;
 const envAnalysisChart = (data) => {
+
+    data.sort(function(a,b){
+        return new Date('01/'+b.DATE) - new Date('01/'+a.DATE);
+    }).reverse();
+
+    // console.log(data);
 
     let labels = data.map(o => o.DATE);
     let lstd_values = data.map(o => o.LSTD);
