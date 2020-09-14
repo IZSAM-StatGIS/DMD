@@ -11,7 +11,7 @@ const env_grid_info = document.querySelector('#environment-grid-info');
 $('#downloadModal').on('shown.bs.modal', function () {
     document.querySelector('#download-env-data-btn').disabled = true;
     if (envDataGrid) { envDataGrid.clearData(); }
-    env_grid_info.innerHTML = '<i class="fas fa-info-circle"></i> Select MODIS Product and Year, then extract data and download results';
+    env_grid_info.innerHTML = '<i class="fas fa-info-circle"></i> Select MODIS Product and Year, then extract data and download the results';
     $('#env_download_year').empty();
     downloadYearsList();
 });
