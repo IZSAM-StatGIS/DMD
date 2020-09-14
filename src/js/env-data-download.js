@@ -9,8 +9,9 @@ import { grid_dateFormatter, dateAccessor } from './tables';
 const env_grid_info = document.querySelector('#environment-grid-info');
 
 $('#downloadModal').on('shown.bs.modal', function () {
+    document.querySelector('#download-env-data-btn').disabled = true;
     if (envDataGrid) { envDataGrid.clearData(); }
-    env_grid_info.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Retrieving environmental data...';
+    env_grid_info.innerHTML = '<i class="fas fa-info-circle"></i> Select MODIS Product and Year, then extract data and download results';
     $('#env_download_year').empty();
     downloadYearsList();
 });
@@ -40,16 +41,20 @@ const downloadYearsList = () => {
         $('#env_download_year').selectpicker('refresh'); 
     },100);
 
-    setTimeout(()=>{
+    /* setTimeout(()=>{
         showPreviewGrid();
-    },500);
+    },500); */
 };
 
-document.querySelector('#env_download_product').addEventListener('change',(e)=>{
+/* document.querySelector('#env_download_product').addEventListener('change',(e)=>{
     showPreviewGrid();
 });
 
 document.querySelector('#env_download_year').addEventListener('change',(e)=>{
+    showPreviewGrid();
+}); */
+
+document.querySelector('#extract-env-data-btn').addEventListener('click',(e)=>{
     showPreviewGrid();
 });
 

@@ -2,12 +2,17 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title"><i class="fas fa-file-csv fa-lg"></i> Download Environmental Data</h5>
+                <h5 class="modal-title"><i class="fas fa-satellite-dish fa-lg"></i> Environmental data download tool</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body bg-dark">
+                <div class="row">
+                    <div class="col-12">
+                        <p class="alert alert-info" id="environment-grid-info"></p>
+                    </div>
+                </div>
                 <div class="row form-group">
                     <div class="col-12">
                         <select id="env_download_product" class="selectpicker" data-style="btn-sm btn-light" data-width="100%">
@@ -27,13 +32,13 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <p class="alert alert-info" id="environment-grid-info"></p>
                         <table id="environment-grid" class="table-striped table-sm table-hover" style="font-size: 12px;"></table>
                     </div>
                 </div>
             </div>
             
             <div class="modal-footer bg-dark text-white">
+                <button class="btn btn-sm btn-light" id="extract-env-data-btn"><i class="fas fa-external-link-alt"></i> Extract</button>
                 <button class="btn btn-sm btn-light" id="download-env-data-btn"><i class="fas fa-arrow-circle-down"></i> Download Full Table</button>
             </div>
         </div>
