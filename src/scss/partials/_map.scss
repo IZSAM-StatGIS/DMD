@@ -62,3 +62,38 @@
     top: 7.5em;
     left: 0.5em;
 }
+
+/** Override stili popup ol-ext */
+.ol-popup {
+    h1 {
+        font-size: 20px;
+        font-weight: bold;
+        color: $app-dark;
+    }
+}
+
+.ol-popup.default > div {
+    border:1px solid $app-dark !important;
+    border-left: 3px solid $app-dark !important;
+    border-radius: 1px !important;
+    box-shadow: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
+    min-width: 300px;
+  }
+
+  .ol-popup.default .anchor {
+    color: $app-dark !important;
+  }
+
+  .ol-popup .closeBox {
+    background-color: $app-gray !important;
+  }
+
+  .ol-popup .closeBox:hover {
+    background-color: $app-dark !important;
+  }
+
+  .ol-popupfeature {
+      button {
+          visibility: hidden;
+      }
+  }

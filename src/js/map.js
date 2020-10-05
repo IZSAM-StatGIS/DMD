@@ -10,10 +10,14 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
 import { Group as LayerGroup, Tile as TileLayer, Image as ImageLayer } from 'ol/layer';
 import { Fill, Stroke, Style, Text, Image, Circle } from 'ol/style';
+import PopupFeature from 'ol-ext/overlay/PopupFeature';
+import 'ol-ext/overlay/Popup.anim.css';
+import 'ol-ext/overlay/Popup.css';
 import moment from 'moment';
 import { server } from './data';
 import { outbreaksGrid } from './tables';
 import { populateSelectedOtbList } from './env-data-analysis';
+import { otbPopupTemplate, dstPopupTemplate } from './popup-templates';
 
 // *********************************************************
 // Mappa
@@ -165,7 +169,10 @@ const deactivateModis = () => {
 //    rimuovendo select.setActive(false) e select.setActive(true)
 //    N.B. E' comunque possibile selezionare un singolo outbreak utilizzando il dragbox su un solo elemento
 
-const select = new Select();
+const select = new Select({
+  multi: true,
+  condition: 'singleClick'
+});
 map.addInteraction(select);
 let selectedFeatures = select.getFeatures();
 select.setActive(false);
@@ -243,6 +250,44 @@ map.on('pointermove', function(e) {
     });
     e.map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 });
+
+// *********************************************************
+// PopupFeature
+// *********************************************************
+let popup = new PopupFeature({
+  popupClass: 'default anim',
+  select: select,
+  canFix: false,
+  closeBox: true,
+  onshow: function(){
+    console.log('ccc');
+  }
+});
+
+map.addOverlay(popup);
+
+// *********************************************************
+// On Click
+// *********************************************************
+map.on('click', function(e){
+  let features = [];
+  let pixel = e.map.getEventPixel(e.originalEvent);
+  let hit = e.map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+    features.push(feature)
+    if (layer){
+      if (layer.get('name') === 'Outbreaks'){
+        popup.setTemplate(otbPopupTemplate);
+      } else {
+        popup.setTemplate(dstPopupTemplate);
+      }
+      popup.show(e.coordinate, features);
+      // return layer.get('name') === 'outbreaks'
+    } 
+  });
+  if (hit){
+      // --
+  }
+})
 
 
 // *********************************************************
