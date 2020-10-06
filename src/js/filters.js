@@ -36,20 +36,38 @@ const buildRestQuery = (disease, species, subtype, country, source, startdt, end
     } else if (moment(startdt,'DD/MM/YYYY').isAfter(moment(enddt, 'DD/MM/YYYY'))){
         return 'invalid date range';
     } else {
+        // Estrazione sezioni data per la query sulla distribuzione
+        let year_ref_start  = moment(startdt, 'DD/MM/YYYY').format('YYYY');
+        let month_ref_start = moment(startdt, 'DD/MM/YYYY').format('M');
+        let year_ref_end    = moment(enddt, 'DD/MM/YYYY').format('YYYY');
+        let month_ref_end   = moment(enddt, 'DD/MM/YYYY').format('M');
         // Query di base con i campi obbligatori
-        let sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND DATE_OF_START_OF_THE_EVENT >= DATE '"+startdt+"' AND DATE_OF_START_OF_THE_EVENT <= DATE '"+enddt+"'";
+        let otb_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND DATE_OF_START_OF_THE_EVENT >= DATE '"+startdt+"' AND DATE_OF_START_OF_THE_EVENT <= DATE '"+enddt+"'";
+        let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND YEAR_REF_START = '"+year_ref_start+"' AND MONTH_REF_START = '"+month_ref_start+"' AND YEAR_REF_END <= '"+year_ref_end+"' AND MONTH_REF_END <= '"+month_ref_end+"'";
         // Aggiunta dei campi non obbligatori alla query
-        if (species.length > 0){ sql += " AND DESC_SPECIE IN ('"+species.join("','")+"')"; }
-        if (subtype.length > 0){ sql += " AND DESC_SUBTYPE IN ('"+subtype.join("','")+"')"; }
-        if (country.length > 0){ sql += " AND COUNTRY_N IN ('"+country.join("','")+"')"; }
+        if (species.length > 0){ 
+            otb_sql += " AND DESC_SPECIE IN ('"+species.join("','")+"')"; 
+            dst_sql += " AND DESC_SPECIE IN ('"+species.join("','")+"')"; 
+        }
+        if (subtype.length > 0){ 
+            otb_sql += " AND DESC_SUBTYPE IN ('"+subtype.join("','")+"')"; 
+            dst_sql += " AND DESC_SUBTYPE IN ('"+subtype.join("','")+"')"; 
+        }
+        if (country.length > 0){ 
+            otb_sql += " AND COUNTRY_N IN ('"+country.join("','")+"')"; 
+            dst_sql += " AND COUNTRY_N IN ('"+country.join("','")+"')"; 
+        }
         if (source.length == 1){ 
             if (source[0] == 'OFFICIAL') {
-                sql += " AND SOURCE_TYPE = 'OFFICIAL'";
+                otb_sql += " AND SOURCE_TYPE = 'OFFICIAL'";
+                dst_sql += " AND SOURCE_TYPE = 'OFFICIAL'";
             } else {
-                sql += " AND SOURCE_TYPE <> 'OFFICIAL'";
+                otb_sql += " AND SOURCE_TYPE <> 'OFFICIAL'";
+                dst_sql += " AND SOURCE_TYPE <> 'OFFICIAL'";
             }
         }
-        return sql;
+        // return sql object con query per outbreak e distribuzione;
+        return { otb: otb_sql, dst: dst_sql };
     }
 };
 
@@ -84,10 +102,10 @@ const setFilters = (sliderend) => {
     }
     // Get Outbreaks
     // ****************************************************************************
-    getOutbreaks(query);
+    getOutbreaks(query.otb);
     // Get Distribution
     // ****************************************************************************
-    getDistribution(query);
+    getDistribution(query.dst);
     // Set time filter and window info panel
     // ****************************************************************************
     if (sliderend === undefined) {

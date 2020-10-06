@@ -1,8 +1,10 @@
 import axios from 'axios';
+import lodash from 'lodash';
 import GeoJSON from 'ol/format/GeoJSON';
+import {fromLonLat, transform} from 'ol/proj';
 import Map from 'ol/Map';
 import View from 'ol/View';
-import { map, outbreaks } from './map';
+import { map, outbreaks, distribution, distributionCharts } from './map';
 import { drawOutbreaksChart } from './chart-otb';
 import { populateOutbreaksGrid, populateDistributionGrid } from './tables'
 
@@ -34,10 +36,10 @@ const server = {
 
 // Focolai
 const getOutbreaks = (sql) => {
-    // console.log(sql)
+    // console.log('query otb', sql)
     axios.get(server.url+"/"+server.layers.vector.outbreaks.id+"/query",{ 
         params:{
-            token: server.token,
+            // token: server.token,
             where: sql,
             outFields: "*",
             orderByFields: "DATE_OF_START_OF_THE_EVENT",
@@ -63,7 +65,78 @@ const populateOutbreaks = (data) => {
 
 // Distribuzione
 const getDistribution = (sql) => {
-
+    // console.log('query distrib', sql);
+    axios.get(server.url+"/"+server.layers.vector.distribution.id+"/query",{ 
+        params:{
+            // token: server.token,
+            where: sql,
+            outFields: "*",
+            // orderByFields: "DATE_OF_START_OF_THE_EVENT",
+            geometryPrecision: "3",
+            outSR: "3857",
+            f: "geojson"
+        } 
+    }).then(function(response){
+        console.log(response.data);
+        summarizeDistribution(response.data.features);
+    });
 };
+
+const summarizeDistribution = (distribution_data) => {
+
+    distributionCharts.getSource().clear();
+
+    let data = [];
+    distribution_data.forEach(feature => {
+      let geoid = feature.properties.GEO_ID;
+      let flag  = feature.properties.FLAG_DISEASE;
+      let lat   = feature.properties.LATITUDE;
+      let lng   = feature.properties.LONGITUDE;
+      data.push( { "geoid" : geoid, "flag": flag, "lng": lng.toFixed(3), "lat": lat.toFixed(3) } );
+    });
+
+    let grouped_data = [];
+    grouped_data = lodash.groupBy(data,"geoid");
+    // console.log(grouped_data);
+    let centroids = [];
+    let unique_geoids = [];
+    lodash.forEach(grouped_data,function(item, key){
+
+      let num_u  = lodash.filter(item, function(el) { return el.flag == "U"; }).length;
+      let num_c  = lodash.filter(item, function(el) { return el.flag == "C"; }).length;
+      let num_v  = lodash.filter(item, function(el) { return el.flag == "V"; }).length;
+      let num_un = lodash.filter(item, function(el) { return el.flag == null; }).length;
+      let num_tot = num_u + num_c + num_v + num_un;
+
+      let feature = {
+        "type":"Feature",
+        "geometry":{
+          "type": "Point", 
+          "coordinates": new transform([ 
+            parseFloat(item[0].lng), 
+            parseFloat(item[0].lat) 
+          ],'EPSG:4326','EPSG:3857')
+        },
+        "properties":{
+          "geoid": key, 
+          "human": num_u,
+          "animals": num_c,
+          "viral": num_v,
+          "unknown": num_un,
+          "tot": num_tot
+        }
+      };
+      // console.log(feature);
+      centroids.push(feature);
+      unique_geoids.push(key);
+    });
+    // console.log(centroids)
+    // console.log(unique_geoids)
+
+    // Popola il layer dei centroidi di distribuzione
+    let collection = {"type": "FeatureCollection", "features": centroids};
+    var featureCollection = new GeoJSON().readFeatures(collection);
+    distributionCharts.getSource().addFeatures(featureCollection);
+}
 
 export { server, getOutbreaks, populateOutbreaks, getDistribution }

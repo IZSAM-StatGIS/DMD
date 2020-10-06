@@ -2,7 +2,7 @@ import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import { fromLonLat, getTransform } from 'ol/proj';
-import {DragBox, Select} from 'ol/interaction';
+import { DragBox, Select } from 'ol/interaction';
 import {OSM, ImageArcGISRest, TileArcGISRest} from 'ol/source';
 import XYZ from 'ol/source/XYZ';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -10,6 +10,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
 import { Group as LayerGroup, Tile as TileLayer, Image as ImageLayer } from 'ol/layer';
 import { Fill, Stroke, Style, Text, Image, Circle } from 'ol/style';
+import Chart from 'ol-ext/style/Chart';
 import PopupFeature from 'ol-ext/overlay/PopupFeature';
 import 'ol-ext/overlay/Popup.anim.css';
 import 'ol-ext/overlay/Popup.css';
@@ -64,6 +65,35 @@ outbreaks.setZIndex(server.layers.vector.outbreaks.zidx);
 // *********************************************************
 // Distribution layer
 // *********************************************************
+const getDonuts = function(feature){
+  let tot = feature.get('tot');
+  // Calcola percentuali per la torta
+  let hum, ani, vir, unk;
+  if (feature.get('tot') > 0){
+    if (feature.get('human') > 0){
+      hum = parseInt((feature.get('human')*100)/tot);
+    } else {
+      hum = 0;
+    }
+    if (feature.get('animals') > 0){
+      ani = parseInt((feature.get('animals')*100)/tot);
+    } else {
+      ani = 0;
+    }
+    if (feature.get('virus') > 0){
+      vir = parseInt((feature.get('virus')*100)/tot);
+    } else {
+      vir = 0;
+    }
+    if (feature.get('unknown') > 0){
+      unk = parseInt((feature.get('unknown')*100)/tot);
+    } else {
+      unk = 0;
+    }
+  }
+  return [ hum, ani, vir, unk ];
+};
+
 const dstStyle = new Style({
   image: new Circle({
       radius: 6,
@@ -82,6 +112,30 @@ map.addLayer(distribution);
 distribution.set('name','Distribution');
 distribution.setOpacity(0.8);
 distribution.setZIndex(server.layers.vector.distribution_aggreg.zidx);
+
+const distributionCharts = new VectorImageLayer({
+  imageRatio: 2,
+  source: new VectorSource({
+    format: new GeoJSON()
+  }),
+  style: function(feature) {
+    return new Style({
+      image: new Chart({
+        type: "donut",
+        radius: "15", 
+        colors: ['#2196f3','#d32f2f','#388e3c','#9e9e9e'],
+        data: getDonuts(feature), 
+        rotateWithView: true,
+        stroke: new Stroke({color: '#eceff1', width: 1})
+      })
+    });
+  }
+});
+
+map.addLayer(distributionCharts);
+distributionCharts.set('name','Distribution Charts');
+distributionCharts.setOpacity(0.8);
+distributionCharts.setZIndex(server.layers.vector.distribution_aggreg.zidx);
 
 // *******************************************
 // MODIS Layer
@@ -260,7 +314,7 @@ let popup = new PopupFeature({
   canFix: false,
   closeBox: true,
   onshow: function(){
-    console.log('ccc');
+    // console.log('popop opened');
   }
 });
 
@@ -331,5 +385,5 @@ document.querySelector("#basemap-selector").addEventListener('change', (e) => {
 
 });
 
-export { map, outbreaks, distribution, modisLayer, selectedFeatures, activateModis, updateModis, deactivateModis };
+export { map, outbreaks, distribution, distributionCharts, modisLayer, selectedFeatures, activateModis, updateModis, deactivateModis };
 
