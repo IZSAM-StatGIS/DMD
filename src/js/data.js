@@ -77,7 +77,7 @@ const getDistribution = (sql) => {
             f: "geojson"
         } 
     }).then(function(response){
-        console.log(response.data);
+        // console.log(response.data);
         summarizeDistribution(response.data.features);
     });
 };

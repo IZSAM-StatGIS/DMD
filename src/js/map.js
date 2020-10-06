@@ -136,6 +136,7 @@ map.addLayer(distributionCharts);
 distributionCharts.set('name','Distribution Charts');
 distributionCharts.setOpacity(0.8);
 distributionCharts.setZIndex(server.layers.vector.distribution_aggreg.zidx);
+distributionCharts.setVisible(false); // Si accende automaticamente per zoom >=7
 
 // *******************************************
 // MODIS Layer
@@ -341,8 +342,19 @@ map.on('click', function(e){
   if (hit){
       // --
   }
-})
+});
 
+// *********************************************************
+// On Moveend  
+// *********************************************************
+map.on('moveend', function(e){
+  // console.log(map.getView().getZoom());
+  if (map.getView().getZoom() >= 6){
+    distributionCharts.setVisible(true);
+  } else {
+    distributionCharts.setVisible(false);
+  }
+});
 
 // *********************************************************
 // Basemap selector
