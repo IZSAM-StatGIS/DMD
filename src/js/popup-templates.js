@@ -21,11 +21,43 @@ let otbPopupTemplate = {
 
 let dstPopupTemplate = {
     title: function(f) {
-        return f.get('COUNTRY_N');
+        return 'Disease distribution';
     },
     attributes: {
-      
+      'COUNTRY_N': { title: 'Country' },
+      'REG_NAME': { 
+        title: 'Region', 
+        format: function(val, f) { 
+          let parsed = nullPopupParser(val);
+          return parsed;
+        }
+      },
+      'admin_name': { 
+        title: 'Admin unit', 
+        format: function(val, f) { 
+          let parsed = nullPopupParser(val);
+          return parsed;
+        }
+      },
+      'GEO_ID': {
+        title: 'Details',
+        format: function(val, f){
+          return `<a href="#" class="dst__" id=${val}>Show details for distribution</a>`;
+        }
+      }
     }
 }
+
+const nullPopupParser = (val) => {
+  if (val == null) { return '-'; } else { return val; }
+};
+
+const test = (geoid) => {
+  console.log(geoid)
+}
+
+
+
+
 
 export { otbPopupTemplate, dstPopupTemplate };

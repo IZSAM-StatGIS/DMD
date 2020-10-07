@@ -2,11 +2,12 @@ import axios from 'axios';
 import lodash from 'lodash';
 import GeoJSON from 'ol/format/GeoJSON';
 import {fromLonLat, transform} from 'ol/proj';
-import Map from 'ol/Map';
-import View from 'ol/View';
+// import Map from 'ol/Map';
+// import View from 'ol/View';
 import { map, outbreaks, distribution, distributionCharts } from './map';
 import { drawOutbreaksChart } from './chart-otb';
 import { populateOutbreaksGrid, populateDistributionGrid } from './tables'
+// import { unique } from 'jquery';
 
 // Services
 const server = {
@@ -70,14 +71,14 @@ const getDistribution = (sql) => {
         params:{
             // token: server.token,
             where: sql,
-            outFields: "*",
+            outFields: "GEO_ID, FLAG_DISEASE, LATITUDE, LONGITUDE, COUNTRY_N, REG_NAME, admin_name",
             // orderByFields: "DATE_OF_START_OF_THE_EVENT",
             geometryPrecision: "3",
             outSR: "3857",
             f: "geojson"
         } 
     }).then(function(response){
-        // console.log(response.data);
+        createUniquePolygons(response.data.features);
         summarizeDistribution(response.data.features);
     });
 };
@@ -97,7 +98,6 @@ const summarizeDistribution = (distribution_data) => {
 
     let grouped_data = [];
     grouped_data = lodash.groupBy(data,"geoid");
-    // console.log(grouped_data);
     let centroids = [];
     let unique_geoids = [];
     lodash.forEach(grouped_data,function(item, key){
@@ -126,17 +126,39 @@ const summarizeDistribution = (distribution_data) => {
           "tot": num_tot
         }
       };
-      // console.log(feature);
       centroids.push(feature);
-      unique_geoids.push(key);
     });
-    // console.log(centroids)
-    // console.log(unique_geoids)
 
     // Popola il layer dei centroidi di distribuzione
     let collection = {"type": "FeatureCollection", "features": centroids};
     var featureCollection = new GeoJSON().readFeatures(collection);
     distributionCharts.getSource().addFeatures(featureCollection);
-}
+};
 
-export { server, getOutbreaks, populateOutbreaks, getDistribution }
+const createUniquePolygons = (distribution_data) => {
+    // console.log(distribution_data);
+    // Cerca i poligoni con GEO_ID uguale e ne lascia solo uno
+    let unique_polygons = lodash.uniqBy(distribution_data, 'properties.GEO_ID');
+    // console.log(unique_polygons);
+    // Popola il layer dei della distribuzione
+    let collection = {"type": "FeatureCollection", "features": unique_polygons};
+    let featureCollection = new GeoJSON().readFeatures(collection);
+    distribution.getSource().addFeatures(featureCollection);
+};
+
+const getDistributionDetails = (geoid) => {
+    axios.get(server.url+"/"+server.layers.vector.distribution.id+"/query",{ 
+        params:{
+            where: "GEO_ID = '"+geoid+"'",
+            outFields: "*",
+            // orderByFields: "DATE_OF_START_OF_THE_EVENT",
+            returnGeometry: false,
+            f: "json"
+        } 
+    }).then(function(response){
+        console.log(response.data.features);
+    });
+};
+
+
+export { server, getOutbreaks, populateOutbreaks, getDistribution, getDistributionDetails }

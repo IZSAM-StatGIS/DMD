@@ -15,7 +15,7 @@ import PopupFeature from 'ol-ext/overlay/PopupFeature';
 import 'ol-ext/overlay/Popup.anim.css';
 import 'ol-ext/overlay/Popup.css';
 import moment from 'moment';
-import { server } from './data';
+import { server, getDistributionDetails } from './data';
 import { outbreaksGrid } from './tables';
 import { populateSelectedOtbList } from './env-data-analysis';
 import { otbPopupTemplate, dstPopupTemplate } from './popup-templates';
@@ -95,14 +95,12 @@ const getDonuts = function(feature){
 };
 
 const dstStyle = new Style({
-  image: new Circle({
-      radius: 6,
-      fill: new Fill({color:'#FF0000'}),
-      stroke: new Stroke({color:'#CC0000', width: 1})
-  })
-})
+    fill: new Fill({color:'#FF0000'}),
+    stroke: new Stroke({color:'#CC0000', width: 1})
+});
 
 const distribution = new VectorImageLayer({
+  imageRatio: 2,
   source: new VectorSource({
       format: new GeoJSON()
   }),
@@ -111,7 +109,7 @@ const distribution = new VectorImageLayer({
 map.addLayer(distribution);
 distribution.set('name','Distribution');
 distribution.setOpacity(0.8);
-distribution.setZIndex(server.layers.vector.distribution_aggreg.zidx);
+distribution.setZIndex(server.layers.vector.distribution.zidx);
 
 const distributionCharts = new VectorImageLayer({
   imageRatio: 2,
@@ -311,11 +309,18 @@ map.on('pointermove', function(e) {
 // *********************************************************
 let popup = new PopupFeature({
   popupClass: 'default anim',
-  select: select,
+  // select: select,
   canFix: false,
   closeBox: true,
   onshow: function(){
-    // console.log('popop opened');
+    // Attiva l'evento onclick sul link ai dettagli nel popup della distribuzione
+    let details_link = document.querySelector('.dst__')
+    if (details_link){
+      details_link.addEventListener('click', (e)=>{
+        let dist_geoid = e.target.attributes.id.value;
+        getDistributionDetails(dist_geoid);
+      });
+    }
   }
 });
 
@@ -329,7 +334,7 @@ map.on('click', function(e){
   let pixel = e.map.getEventPixel(e.originalEvent);
   let hit = e.map.forEachFeatureAtPixel(pixel, function (feature, layer) {
     features.push(feature)
-    if (layer){
+    if (layer && layer.get('name') !== 'Distribution Charts'){
       if (layer.get('name') === 'Outbreaks'){
         popup.setTemplate(otbPopupTemplate);
       } else {
