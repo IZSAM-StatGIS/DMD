@@ -136,7 +136,7 @@ const summarizeDistribution = (distribution_data) => {
 };
 
 const createUniquePolygons = (distribution_data) => {
-    // console.log(distribution_data);
+    distributionCharts.getSource().clear();
     // Cerca i poligoni con GEO_ID uguale e ne lascia solo uno
     let unique_polygons = lodash.uniqBy(distribution_data, 'properties.GEO_ID');
     // console.log(unique_polygons);
