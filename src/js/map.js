@@ -63,7 +63,7 @@ outbreaks.setOpacity(0.8);
 outbreaks.setZIndex(server.layers.vector.outbreaks.zidx);
 
 // *********************************************************
-// Distribution layer
+// Distribution layers (charts e poligoni)
 // *********************************************************
 const getDonuts = function(feature){
   let tot = feature.get('tot');
@@ -137,8 +137,8 @@ map.addLayer(distributionCharts);
 distributionCharts.set('name','Distribution Charts');
 distributionCharts.setOpacity(0.8);
 distributionCharts.setZIndex(server.layers.vector.distribution_aggreg.zidx);
-distributionCharts.setVisible(false); // Si accende automaticamente per zoom >= chartsZoom
-let chartsZoom = 7;
+distributionCharts.setVisible(false); 
+let chartsZoom = 7; // accensione automatica per zoom >= chartsZoom
 
 // *******************************************
 // MODIS Layer
