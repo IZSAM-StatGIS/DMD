@@ -65,19 +65,22 @@ const populateOutbreaks = (data) => {
 };
 
 // Distribuzione
+// NB. l'array globale serve per l'estrazione dei dettagli dal singolo poligono nel popup e per la tabella della distribuzione
+let distribution_data = []; 
 const getDistribution = (sql) => {
     // console.log('query distrib', sql);
     axios.get(server.url+"/"+server.layers.vector.distribution.id+"/query",{ 
         params:{
             // token: server.token,
             where: sql,
-            outFields: "GEO_ID, FLAG_DISEASE, LATITUDE, LONGITUDE, COUNTRY_N, REG_NAME, admin_name",
-            // orderByFields: "DATE_OF_START_OF_THE_EVENT",
+            // GEO_ID, FLAG_DISEASE, LATITUDE, LONGITUDE, COUNTRY_N, REG_NAME, admin_name, YEAR_REF_START, YEAR_REF_END, MONTH_REF_START, MONTH_REF_END, DESC_DIAGNOSIS, DESC_SUBTYPE, DESC_SOURCE, NUM_CASES_DISTRIB
+            outFields: "*",
             geometryPrecision: "3",
             outSR: "3857",
             f: "geojson"
         } 
     }).then(function(response){
+        distribution_data = response.data.features;
         createUniquePolygons(response.data.features);
         summarizeDistribution(response.data.features);
     });
@@ -99,13 +102,12 @@ const summarizeDistribution = (distribution_data) => {
     let grouped_data = [];
     grouped_data = lodash.groupBy(data,"geoid");
     let centroids = [];
-    let unique_geoids = [];
     lodash.forEach(grouped_data,function(item, key){
 
       let num_u  = lodash.filter(item, function(el) { return el.flag == "U"; }).length;
       let num_c  = lodash.filter(item, function(el) { return el.flag == "C"; }).length;
       let num_v  = lodash.filter(item, function(el) { return el.flag == "V"; }).length;
-      let num_un = lodash.filter(item, function(el) { return el.flag == null; }).length;
+      let num_un = lodash.filter(item, function(el) { return el.flag == null;}).length;
       let num_tot = num_u + num_c + num_v + num_un;
 
       let feature = {
@@ -121,7 +123,7 @@ const summarizeDistribution = (distribution_data) => {
           "geoid": key, 
           "human": num_u,
           "animals": num_c,
-          "viral": num_v,
+          "virus": num_v,
           "unknown": num_un,
           "tot": num_tot
         }
@@ -136,7 +138,7 @@ const summarizeDistribution = (distribution_data) => {
 };
 
 const createUniquePolygons = (distribution_data) => {
-    distributionCharts.getSource().clear();
+    distribution.getSource().clear();
     // Cerca i poligoni con GEO_ID uguale e ne lascia solo uno
     let unique_polygons = lodash.uniqBy(distribution_data, 'properties.GEO_ID');
     // console.log(unique_polygons);
@@ -147,17 +149,8 @@ const createUniquePolygons = (distribution_data) => {
 };
 
 const getDistributionDetails = (geoid) => {
-    axios.get(server.url+"/"+server.layers.vector.distribution.id+"/query",{ 
-        params:{
-            where: "GEO_ID = '"+geoid+"'",
-            outFields: "*",
-            // orderByFields: "DATE_OF_START_OF_THE_EVENT",
-            returnGeometry: false,
-            f: "json"
-        } 
-    }).then(function(response){
-        console.log(response.data.features);
-    });
+    let filtered = distribution_data.filter((o) => {return o.properties.GEO_ID == geoid});
+    console.log(filtered);
 };
 
 

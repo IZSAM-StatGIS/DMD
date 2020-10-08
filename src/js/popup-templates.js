@@ -42,7 +42,7 @@ let dstPopupTemplate = {
       'GEO_ID': {
         title: 'Details',
         format: function(val, f){
-          return `<a href="#" class="dst__" id=${val}>Show details for distribution</a>`;
+          return `<a href="#" class="dst__" id=${val}><i class="far fa-list-alt"></i> Show</a>`;
         }
       }
     }

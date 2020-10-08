@@ -1,4 +1,4 @@
-import { outbreaks, distribution, modisLayer, activateModis, deactivateModis } from './map';
+import { map, outbreaks, distribution, distributionCharts, chartsZoom, modisLayer, activateModis, deactivateModis } from './map';
 
 // *****************************************************************************
 // Accesione e spegnimento Overlay layers
@@ -21,9 +21,11 @@ document.querySelector('#otb-opacity-slider').addEventListener('change', (e) => 
 document.querySelector('input[name=dst-chk]').addEventListener('click', (e) => {
     if (e.target.checked) {
         distribution.setVisible(true);
+        if (map.getView().getZoom() >= chartsZoom){ distributionCharts.setVisible(false); }
         document.getElementById("dst-opacity-slider").disabled = false;
     } else {
         distribution.setVisible(false);
+        distributionCharts.setVisible(false);
         document.getElementById("dst-opacity-slider").disabled = true;
     }
 });

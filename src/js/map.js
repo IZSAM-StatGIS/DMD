@@ -94,9 +94,23 @@ const getDonuts = function(feature){
   return [ hum, ani, vir, unk ];
 };
 
+const chartStyle = (feature) => {
+  let style = new Style({
+    image: new Chart({
+      type: "donut",
+      radius: "12", 
+      colors: ['#2196f3','#d32f2f','#388e3c','#9e9e9e'],
+      data: getDonuts(feature), 
+      rotateWithView: true,
+      stroke: new Stroke({color: '#eceff1', width: 1})
+    })
+  });
+  return style;
+};
+
 const dstStyle = new Style({
-    fill: new Fill({color:'#FF0000'}),
-    stroke: new Stroke({color:'#CC0000', width: 1})
+    fill: new Fill({color:'#ff8a80'}),
+    stroke: new Stroke({color:'#ff5252', width: 1})
 });
 
 const distribution = new VectorImageLayer({
@@ -116,25 +130,15 @@ const distributionCharts = new VectorImageLayer({
   source: new VectorSource({
     format: new GeoJSON()
   }),
-  style: function(feature) {
-    return new Style({
-      image: new Chart({
-        type: "donut",
-        radius: "15", 
-        colors: ['#2196f3','#d32f2f','#388e3c','#9e9e9e'],
-        data: getDonuts(feature), 
-        rotateWithView: true,
-        stroke: new Stroke({color: '#eceff1', width: 1})
-      })
-    });
-  }
+  style: chartStyle
 });
 
 map.addLayer(distributionCharts);
 distributionCharts.set('name','Distribution Charts');
 distributionCharts.setOpacity(0.8);
 distributionCharts.setZIndex(server.layers.vector.distribution_aggreg.zidx);
-distributionCharts.setVisible(false); // Si accende automaticamente per zoom >=7
+distributionCharts.setVisible(false); // Si accende automaticamente per zoom >= chartsZoom
+let chartsZoom = 7;
 
 // *******************************************
 // MODIS Layer
@@ -330,31 +334,44 @@ map.addOverlay(popup);
 // On Click
 // *********************************************************
 map.on('click', function(e){
-  let features = [];
+
   let pixel = e.map.getEventPixel(e.originalEvent);
-  let hit = e.map.forEachFeatureAtPixel(pixel, function (feature, layer) {
-    features.push(feature)
-    if (layer && layer.get('name') !== 'Distribution Charts'){
-      if (layer.get('name') === 'Outbreaks'){
-        popup.setTemplate(otbPopupTemplate);
-      } else {
-        popup.setTemplate(dstPopupTemplate);
-      }
-      popup.show(e.coordinate, features);
-      // return layer.get('name') === 'outbreaks'
+  let coordinates = e.coordinate;
+  let features = [];
+
+  e.map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+    features.push(feature);
+    if (layer){
+      feature.set('__layer__', layer.get('name'));
     } 
   });
-  if (hit){
-      // --
-  }
+
+  showInfoPopup(features, coordinates);
 });
+
+const showInfoPopup = (features, coordinates) => {
+  // console.log(features);
+  if (features.length > 0) {
+    if (features[0].getProperties().__layer__ == 'Outbreaks') {
+      popup.setTemplate(otbPopupTemplate);
+      var points = features.filter(f => f.getProperties().__layer__ == 'Outbreaks');
+      // console.log(points)
+      setTimeout(function(){ popup.show(coordinates, points); },100)
+    } else if (features[0].getProperties().__layer__ == 'Distribution'){
+      popup.setTemplate(dstPopupTemplate);
+      var polys = features.filter(f => f.getProperties().__layer__ == 'Distribution');
+      // console.log(polys)
+      setTimeout(function(){ popup.show(coordinates, polys); },100)
+    }
+  }
+}
 
 // *********************************************************
 // On Moveend  
 // *********************************************************
 map.on('moveend', function(e){
   // console.log(map.getView().getZoom());
-  if (map.getView().getZoom() >= 6){
+  if (map.getView().getZoom() >= chartsZoom){
     distributionCharts.setVisible(true);
   } else {
     distributionCharts.setVisible(false);
@@ -369,7 +386,7 @@ document.querySelector("#basemap-selector").addEventListener('change', (e) => {
   var selected_basemap = basemaps.options[basemaps.selectedIndex].value;
   // console.log(selected_basemap);
   if (baselayer){ 
-  map.removeLayer(baselayer); 
+    map.removeLayer(baselayer); 
   }
   
   if (selected_basemap == "topo" ){
@@ -402,5 +419,5 @@ document.querySelector("#basemap-selector").addEventListener('change', (e) => {
 
 });
 
-export { map, outbreaks, distribution, distributionCharts, modisLayer, selectedFeatures, activateModis, updateModis, deactivateModis };
+export { map, outbreaks, distribution, distributionCharts, chartsZoom, modisLayer, selectedFeatures, activateModis, updateModis, deactivateModis };
 
