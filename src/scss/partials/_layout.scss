@@ -3,15 +3,11 @@ container {
     width: 100vw;
     display: grid;
     grid-gap: .25em;
-    grid-template-rows: 92px 1fr 2px 280px;
+    grid-template-rows: 92px 120px 1fr 2px 280px;
     grid-template-columns: 1fr 2px 500px;
-    /*grid-template-areas: 
-    "header     header      header"
-    "map        vGutter     sidebar"
-    "hGutter    vGutter     sidebar"
-    "bottombar  vGutter     otbchart"*/
     grid-template-areas: 
     "header     header      header"
+    "map        vGutter     timebar"
     "map        vGutter     sidebar"
     "hGutter    hGutter     hGutter"
     "bottombar  bottombar   bottombar"
@@ -25,6 +21,13 @@ map {
     grid-area: map;
     position: relative;
     margin-left: .25em;
+}
+
+timebar {
+    grid-area: timebar;
+    background-color: #FFF;
+    margin-bottom: .25em;
+    margin-right: .25em;
 }
 
 sidebar {

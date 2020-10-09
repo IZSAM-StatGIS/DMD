@@ -38,7 +38,7 @@ Split({
     element: document.querySelector('v-gutter'),
   }],
   rowGutters: [{
-    track: 2,
+    track: 3,
     element: document.querySelector('h-gutter')
   }],
   onDragEnd: function(e){

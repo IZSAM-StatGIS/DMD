@@ -148,9 +148,19 @@ const createUniquePolygons = (distribution_data) => {
     distribution.getSource().addFeatures(featureCollection);
 };
 
-const getDistributionDetails = (geoid) => {
-    let filtered = distribution_data.filter((o) => {return o.properties.GEO_ID == geoid});
-    console.log(filtered);
+const getDistributionDetails = (geoid_arr) => {
+    let data = [];
+    geoid_arr.forEach(geoid => {
+        let filtered = distribution_data.filter((o) => { return o.properties.GEO_ID == geoid })
+        filtered.forEach((feature) => {
+            data.push(feature);
+        })
+        
+    });
+    // console.log(data)
+    let collection = {"type": "FeatureCollection", "features": data};
+    let featureCollection = new GeoJSON().readFeatures(collection);
+    return featureCollection;
 };
 
 

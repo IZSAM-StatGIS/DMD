@@ -361,7 +361,10 @@ const showInfoPopup = (features, coordinates) => {
       popup.setTemplate(dstPopupTemplate);
       var polys = features.filter(f => f.getProperties().__layer__ == 'Distribution');
       // console.log(polys)
-      setTimeout(function(){ popup.show(coordinates, polys); },100)
+      let geoid_arr = polys.map(f => f.getProperties().GEO_ID);
+      let polys_in_stack = getDistributionDetails(geoid_arr);
+      // console.log(polys_in_stack);
+      setTimeout(function(){ popup.show(coordinates, polys_in_stack); },100)
     }
   }
 }

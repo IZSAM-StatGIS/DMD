@@ -92,6 +92,7 @@ const createSlider = () => {
 }
 
 // Timeline Panel
+/*
 const timelineBtn = document.querySelector("#timeline-btn");
 const timelinePanel = document.querySelector("#timeline-panel");
 timelineBtn.addEventListener('click',(e)=>{
@@ -101,6 +102,6 @@ timelineBtn.addEventListener('click',(e)=>{
     } else {
         timelinePanel.style.visibility = 'hidden'
     }    
-});
+});*/
 
 export { setTimePanel }
