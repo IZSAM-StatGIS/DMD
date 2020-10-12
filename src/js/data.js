@@ -1,13 +1,12 @@
 import axios from 'axios';
 import lodash from 'lodash';
 import GeoJSON from 'ol/format/GeoJSON';
-import {fromLonLat, transform} from 'ol/proj';
-// import Map from 'ol/Map';
-// import View from 'ol/View';
-import { map, outbreaks, distribution, distributionCharts } from './map';
+import {transform} from 'ol/proj';
+import { outbreaks, distribution, distributionCharts } from './map';
 import { drawOutbreaksChart } from './chart-otb';
-import { populateOutbreaksGrid, populateDistributionGrid } from './tables'
-// import { unique } from 'jquery';
+import { populateOutbreaksGrid, populateDistributionGrid } from './tables';
+import { mapDisable, mapEnable } from './utils';
+
 
 // Services
 const server = {
@@ -68,6 +67,7 @@ const populateOutbreaks = (data) => {
 // NB. l'array globale serve per l'estrazione dei dettagli dal singolo poligono nel popup e per la tabella della distribuzione
 let distribution_data = []; 
 const getDistribution = (sql) => {
+    mapDisable('Retrieving data from server...');
     // console.log('query distrib', sql);
     axios.get(server.url+"/"+server.layers.vector.distribution.id+"/query",{ 
         params:{
@@ -83,6 +83,8 @@ const getDistribution = (sql) => {
         createUniquePolygons(response.data.features);
         summarizeDistribution(response.data.features);
         populateDistributionGrid(response.data);
+
+        mapEnable();
     });
 };
 

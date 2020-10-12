@@ -2,7 +2,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import Tabulator from 'tabulator-tables';
 
-import { outbreaks, selectedFeatures } from './map';
+import { map, distribution, outbreaks, selectedFeatures, dstStyle, dstStyleHighligh, setFullExtent } from './map';
 import tippy from 'tippy.js';
 
 let outbreaksGrid;
@@ -126,6 +126,7 @@ const populateDistributionGrid = (data) => {
         placeholder: "No Data Available",
         layout: "fitColumns", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
+            {title:"Geo ID", field:"GEO_ID"},
             {title:"Country", field:"COUNTRY_N"},
             {title:"Region", field:"REG_NAME"},
             {title:"Admin unit", field:"admin_name"},
@@ -138,6 +139,7 @@ const populateDistributionGrid = (data) => {
             {title:"Disease", field:"DISEASE_DESC"},
             {title:"Species", field:"DESC_SPECIE"},
             {title:"Subtype", field:"DESC_SUBTYPE"},
+            {title:"Diagnosis", field:"DESC_DIAGNOSIS"},
             {title:"Cases", field:"NUM_CASES_DISTRIB"}
         ],
         initialSort:[
@@ -145,35 +147,78 @@ const populateDistributionGrid = (data) => {
             {column:"MONTH_REF_START", dir:"desc"}
         ],
         footerElement:  "<div style='display:flex;align-items:center;justify-content:space-between;' id='otb-grid-footer'>"+
-                            "<div><span id='dst-grid-count'></span>&nbsp;Outbreaks found, <span id='dst-grid-selected-count'>0</span> selected</div>"+
-                            "<div class='btn-group dropup'>"+
-                                "<button class='btn btn-sm btn-outline-dark' id='dst-grid-show-all'><i class='fas fa-align-justify fa-lg'></i> All</button>"+
-                                "<button class='btn btn-sm btn-outline-dark' id='dst-grid-show-selected'><i class='fas fa-grip-lines fa-lg'></i> Selected</button>"+
-                                "<button class='btn btn-sm btn-outline-dark dropdown-toggle' data-toggle='dropdown'><i class='fas fa-file-csv fa-lg'></i> Download</button>"+
-                                "<div class='dropdown-menu'>"+
-                                    "<button class='dropdown-item' href='#' id='dst-grid-download'>Oubreaks data</button>"+
-                                    "<div class='dropdown-divider' href='#'>Distribution data</div>"+
-                                    "<button class='dropdown-item disabled' href='#' id='dst-grid-download-selected'>Selected distribution data</button>"+
-                                "</div>"+
-                            "</div>"+
-                        "</div>"
+                            "<div><span id='dst-grid-count'></span>&nbsp; features found, <span id='dst-grid-selected-count'>0</span> selected</div>"+
+                            "<button class='btn btn-sm btn-outline-dark' href='#' id='dst-grid-download'><i class='fas fa-file-csv fa-lg'></i> Download table</button>"+
+                        "</div>",
+        rowClick: function(e, row){ 
+            row.toggleSelect();
+        },
+        rowSelectionChanged: function(data, rows) {
+            // Work around per rendere selezionabile una sola riga alla vota (il metodo 'selectable:1' di tabulator sembra avere un baco)
+            if (data.length > 1){
+                distributionGrid.deselectRow(rows[0]);
+            }
+            setTimeout(() => {$('#dst-grid-selected-count').html(distributionGrid.getSelectedData().length)},250);
+        },
+        rowSelected: function(row){
+            // Seleziona feature corrispondenti sulla mappa
+            distribution.getSource().getFeatures().forEach(feature => {
+                if (feature.get('GEO_ID') == row.getData().GEO_ID){
+                    feature.setStyle(dstStyleHighligh);
+                    let featureExtent = feature.getGeometry().getExtent();
+                    map.getView().fit(featureExtent, map.getSize());
+                }
+            });
+            if (distributionGrid.getSelectedData().length > 0) {
+                $('#dst-grid-download-selected').removeClass('disabled');
+                $('#dst-grid-download-selected-env').removeClass('disabled');
+            }
+        },
+        rowDeselected: function(row){
+            // Deseleziona feature corrispondenti sulla mappa
+            distribution.getSource().getFeatures().forEach(feature => {
+                if (feature.get('GEO_ID') == row.getData().GEO_ID){
+                    feature.setStyle(dstStyle);
+                }
+            });
+            $('#otb-grid-selected-count').html(distributionGrid.getSelectedData().length);
+            if (distributionGrid.getSelectedData().length < 1) {
+                setFullExtent();
+            }
+            
+        }
     });
 
     distributionGrid.replaceData(tabledata);
+
+    $('#dst-grid-count').html(distributionGrid.getData().length);
+
+    $('#dst-grid-download').click((e)=>{
+        distributionGrid.download("csv", "distribution.csv", {delimiter: ","});
+    });
+
+    $('#dst-grid-download-selected').click((e)=>{
+        distributionGrid.download("csv", "outbreaks.csv", {delimiter: ","}, "selected");
+    });
+
+    $('#dst-grid-show-selected').click((e)=>{
+        let selectedRows = distributionGrid.getSelectedData();
+        if (selectedRows.length > 0) {
+            let filter_values_arr = selectedRows.map(row => row.GEO_ID)
+            distributionGrid.setFilter([
+                {field:"GEO_ID", type:"in", value:filter_values_arr}
+            ]);
+        }
+    });
+    tippy('#dst-grid-show-selected', {content:'Display selected records only'})
+
+    
+    $('#dst-grid-show-all').click((e)=>{
+        distributionGrid.clearFilter();
+    });
+    tippy('#otb-grid-show-all', {content:'Display all records'})
 };
 
-/*
-$("#grid-tabs a").click((e) => {
-    e.preventDefault();
-    console.log(e.currentTarget.innerText)
-    console.log(distributionGrid.getData());
-    if (e.currentTarget.innerText == 'Outbreaks') {
-        outbreaksGrid.redraw();
-    } else {
-        distributionGrid.redraw();
-    }
-});
-*/
 
 const grid_dateFormatter = (cell, formatterParams, onRendered) => {
     // cell - the cell component

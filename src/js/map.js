@@ -27,8 +27,20 @@ var map = new Map({
   target: 'map',
   view: new View({
     center: fromLonLat([14.162352, 42.1457401]),
-    zoom: 4
+    zoom: 4,
+    minZoom: 2,
+    maxZoom: 8
   })
+});
+
+const setFullExtent = () => {
+  map.getView().setCenter(fromLonLat([14.162352, 42.1457401]));
+  map.getView().setZoom(4);
+};
+
+document.querySelector('#fullext-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+  setFullExtent();
 });
 
 // *********************************************************
@@ -111,6 +123,11 @@ const chartStyle = (feature) => {
 const dstStyle = new Style({
     fill: new Fill({color:'#ff8a80'}),
     stroke: new Stroke({color:'#ff5252', width: 1})
+});
+
+const dstStyleHighligh = new Style({
+  fill: new Fill({color:'#33b5e5'}),
+  stroke: new Stroke({color:'#0d47a1', width: 2})
 });
 
 const distribution = new VectorImageLayer({
@@ -422,5 +439,5 @@ document.querySelector("#basemap-selector").addEventListener('change', (e) => {
 
 });
 
-export { map, outbreaks, distribution, distributionCharts, chartsZoom, modisLayer, selectedFeatures, activateModis, updateModis, deactivateModis };
+export { map, outbreaks, distribution, distributionCharts, chartsZoom, modisLayer, selectedFeatures, dstStyle, dstStyleHighligh, setFullExtent, activateModis, updateModis, deactivateModis };
 

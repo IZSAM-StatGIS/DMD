@@ -39,17 +39,16 @@ let dstPopupTemplate = {
           return parsed;
         }
       },
-      /*
-      'GEO_ID': {
-        title: 'Details',
-        format: function(val, f){
-          return `<a href="#" class="dst__" id=${val}><i class="far fa-list-alt"></i> Show</a>`;
-        }
-      }*/
       'YEAR_REF_START': { title: 'Start Year'},
       'MONTH_REF_START': { title: 'Start Month'},
       'DISEASE_DESC': { title: 'Disease '},
-      'DESC_SPECIE': { title: 'Specie '},
+      'DESC_SPECIE': { 
+        title: 'Specie', 
+        format: function(val, f) { 
+          let parsed = nullPopupParser(val);
+          return parsed;
+        }
+      },
       'DESC_SUBTYPE': { 
         title: 'Subtype', 
         format: function(val, f) { 
