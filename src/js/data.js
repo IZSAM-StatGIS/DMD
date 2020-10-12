@@ -71,10 +71,9 @@ const getDistribution = (sql) => {
     // console.log('query distrib', sql);
     axios.get(server.url+"/"+server.layers.vector.distribution.id+"/query",{ 
         params:{
-            // token: server.token,
             where: sql,
-            // GEO_ID, FLAG_DISEASE, LATITUDE, LONGITUDE, COUNTRY_N, REG_NAME, admin_name, YEAR_REF_START, YEAR_REF_END, MONTH_REF_START, MONTH_REF_END, DESC_DIAGNOSIS, DESC_SUBTYPE, DESC_SOURCE, NUM_CASES_DISTRIB
             outFields: "*",
+            orderByFields: "YEAR_REF_START, MONTH_REF_START",
             geometryPrecision: "3",
             outSR: "3857",
             f: "geojson"
@@ -83,6 +82,7 @@ const getDistribution = (sql) => {
         distribution_data = response.data.features;
         createUniquePolygons(response.data.features);
         summarizeDistribution(response.data.features);
+        populateDistributionGrid(response.data);
     });
 };
 
