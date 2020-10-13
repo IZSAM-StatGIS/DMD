@@ -1,7 +1,6 @@
 import 'chart.js';
 
 const drawLegendChart = () => {
-    console.log('legend')
     // Grafico
     let ctx = document.getElementById('legend-chart').getContext('2d');
     

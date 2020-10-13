@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Datepicker } from 'vanillajs-datepicker';
 import { getOutbreaks, getDistribution } from './data';
 import { setTimePanel } from './time';
-import { updateModis } from './map';
+import { updateModis, setFullExtent } from './map';
 
 
 // Selezione di tutte le malattie all'avvio
@@ -138,6 +138,8 @@ $('#reset-filters-btn').click((e)=>{
     datepicker_end.setDate(end_date_input.value);
     // Set Filters
     setFilters();
+
+    setFullExtent();
 });
 
 export { setFilters }
