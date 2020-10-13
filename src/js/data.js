@@ -67,7 +67,7 @@ const populateOutbreaks = (data) => {
 // NB. l'array globale serve per l'estrazione dei dettagli dal singolo poligono nel popup e per la tabella della distribuzione
 let distribution_data = []; 
 const getDistribution = (sql) => {
-    mapDisable('Retrieving data from the server...');
+    mapDisable('Retrieving data from the server');
     // console.log('query distrib', sql);
     axios.get(server.url+"/"+server.layers.vector.distribution.id+"/query",{ 
         params:{

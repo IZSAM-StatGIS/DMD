@@ -22,8 +22,8 @@ const generateMonthYearRange = (start, end) => {
 
 let loadingPanel;
 const mapDisable = (msg) => {
-    if (msg == 'undefined') {
-        msg = 'Wait...'
+    if (msg == undefined) {
+        msg = 'Running'
     }
     loadingPanel = jsPanel.modal.create({
         id: 'loading-data-panel',
@@ -31,7 +31,7 @@ const mapDisable = (msg) => {
         header: false,
         closeOnBackdrop: false, 
         closeOnEscape: false,
-        content: `<div style="padding:10px;"><i class="fas fa-spinner fa-spin fa-lg"></i> ${msg}</div>`,
+        content: `<div style="padding:20px;"><i class="fas fa-spinner fa-spin fa-lg"></i> ${msg}</div>`,
         contentSize: 'auto',
         callback: function(){
             // console.log(this);

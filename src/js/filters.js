@@ -17,7 +17,7 @@ const datepicker_start = new Datepicker(start_date_input, {
     orientation: 'bottom',
     todayHighlight: true,
     format: 'dd/mm/yyyy'
-}); 
+});
 
 // Configurazione datepicker end date
 const end_date_input = document.querySelector('#enddate');

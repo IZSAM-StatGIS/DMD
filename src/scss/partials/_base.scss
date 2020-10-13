@@ -22,6 +22,12 @@ html, body {
     // font-size: 13px;
 }
 
+.nav-item > .nav-link:not(.active):hover {
+    background-color: #02294E;
+    border:none;
+    border-bottom: 2px #fff;
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
     background-color: #3c5a78;
