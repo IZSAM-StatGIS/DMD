@@ -147,7 +147,7 @@ const populateDistributionGrid = (data) => {
             {column:"MONTH_REF_START", dir:"desc"}
         ],
         footerElement:  "<div style='display:flex;align-items:center;justify-content:space-between;' id='otb-grid-footer'>"+
-                            "<div><span id='dst-grid-count'></span>&nbsp; features found, <span id='dst-grid-selected-count'>0</span> selected</div>"+
+                            "<div><span id='dst-grid-count'></span>&nbsp; Affected areas found, <span id='dst-grid-selected-count'>0</span> selected</div>"+
                             "<button class='btn btn-sm btn-outline-dark' href='#' id='dst-grid-download'><i class='fas fa-file-csv fa-lg'></i> Download table</button>"+
                         "</div>",
         rowClick: function(e, row){ 
@@ -158,21 +158,19 @@ const populateDistributionGrid = (data) => {
             if (data.length > 1){
                 distributionGrid.deselectRow(rows[0]);
             }
-            setTimeout(() => {$('#dst-grid-selected-count').html(distributionGrid.getSelectedData().length)},250);
+            setTimeout(() => { $('#dst-grid-selected-count').html(distributionGrid.getSelectedData().length) }, 250);
         },
         rowSelected: function(row){
             // Seleziona feature corrispondenti sulla mappa
-            distribution.getSource().getFeatures().forEach(feature => {
-                if (feature.get('GEO_ID') == row.getData().GEO_ID){
-                    feature.setStyle(dstStyleHighligh);
-                    let featureExtent = feature.getGeometry().getExtent();
-                    map.getView().fit(featureExtent, map.getSize());
-                }
-            });
-            if (distributionGrid.getSelectedData().length > 0) {
-                $('#dst-grid-download-selected').removeClass('disabled');
-                $('#dst-grid-download-selected-env').removeClass('disabled');
-            }
+            setTimeout(() => {
+                distribution.getSource().getFeatures().forEach(feature => {
+                    if (feature.get('GEO_ID') == row.getData().GEO_ID){
+                        feature.setStyle(dstStyleHighligh);
+                        let featureExtent = feature.getGeometry().getExtent();
+                        map.getView().fit(featureExtent, map.getSize());
+                    }
+                });
+            },1000);
         },
         rowDeselected: function(row){
             // Deseleziona feature corrispondenti sulla mappa

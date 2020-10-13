@@ -20,6 +20,7 @@ import Split from 'split-grid';
 import { map } from './js/map';
 import { outbreaksGrid } from './js/tables';
 import './js/chart-otb';
+import './js/chart-legend';
 import './js/filters';
 import './js/time';
 import './js/lists';

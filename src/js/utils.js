@@ -31,10 +31,10 @@ const mapDisable = (msg) => {
         header: false,
         closeOnBackdrop: false, 
         closeOnEscape: false,
-        content: `<div style="padding:10px;"><i class="fas fa-spinner fa-spin"></i> ${msg}</div>`,
+        content: `<div style="padding:10px;"><i class="fas fa-spinner fa-spin fa-lg"></i> ${msg}</div>`,
         contentSize: 'auto',
         callback: function(){
-            
+            // console.log(this);
         }
     });
 };
