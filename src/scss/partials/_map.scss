@@ -98,3 +98,9 @@
           visibility: hidden;
       }
   }
+
+  /** Override stili notification ol-ext */
+  .ol-notification > div {
+      border-radius: 0px !important;
+      background-color: $app-dark !important;
+  }

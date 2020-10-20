@@ -14,6 +14,8 @@ import Chart from 'ol-ext/style/Chart';
 import PopupFeature from 'ol-ext/overlay/PopupFeature';
 import 'ol-ext/overlay/Popup.anim.css';
 import 'ol-ext/overlay/Popup.css';
+import Notification from 'ol-ext/control/Notification';
+import 'ol-ext/control/Notification.css';
 import moment from 'moment';
 import { server, getDistributionDetails } from './data';
 import { outbreaksGrid } from './tables';
@@ -51,6 +53,13 @@ let baselayer = new TileLayer({
 });
 map.addLayer(baselayer);
 baselayer.setZIndex(10);
+
+let notification = new Notification({
+  className: 'default anim', 
+  hideOnClick: true, 
+  closeBox: true
+});
+map.addControl(notification);
 
 // *********************************************************
 // Outbreaks layer
@@ -189,7 +198,6 @@ const activateModis = (selected_modis) => {
       TIME: modisinterval
     },
     url: image_url
-    
   });
   
   modisLayer = new ImageLayer({
@@ -199,7 +207,6 @@ const activateModis = (selected_modis) => {
   modisLayer.setZIndex(11);
   let modisOpacity = document.querySelector('#modis-opacity-slider').value / 10
   modisLayer.setOpacity(modisOpacity);
-  
   
   modisSource.on('imageloadstart', function() {
     document.getElementById('modis-loading').innerHTML = ' <i class="fas fa-spinner fa-spin"></i> Loading...'
@@ -290,6 +297,13 @@ selectedFeatures.on(['add', 'remove'], function () {
   let id_outbreaks = selectedFeatures.getArray().map(function (feature) {
     return feature.get('ID_OUTBREAK');
   });
+
+  if (selectedFeatures.getArray().length > 0) {
+    notification.show('Selected outbreaks: '+selectedFeatures.getArray().length, 3000)
+  } else {
+    notification.show('No outbreak selected!');
+  }
+  
 
   if (id_outbreaks.length > 0) {
     // console.log(id_outbreaks.join(', '));
