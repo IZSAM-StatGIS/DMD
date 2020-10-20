@@ -245,7 +245,7 @@ const deactivateModis = () => {
 
 const select = new Select({
   multi: true,
-  condition: 'singleClick'
+  // condition: 'singleClick'
 });
 map.addInteraction(select);
 let selectedFeatures = select.getFeatures();
