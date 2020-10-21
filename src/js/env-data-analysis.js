@@ -5,6 +5,7 @@ import lodash from 'lodash';
 import { server } from './data';
 import { selectedFeatures } from './map';
 import { envAnalysisResultsPanel, envAnalysisGrid, envAnalysisChart } from './env-data-analysis-results';
+import { mapDisable, mapEnable } from './utils';
 
 const populateSelectedOtbList = () => {
     $('#otb-selector').empty()
@@ -41,6 +42,9 @@ const populateSelectedOtbList = () => {
 };
 
 $('#run-analysis-btn').click((e)=>{
+
+    mapDisable('Extracting MODIS values');
+
     let selection = $('#otb-selector').val();
     let sel_lng  = selection.split(',')[0];
     let sel_lat  = selection.split(',')[1];
@@ -125,6 +129,7 @@ $('#run-analysis-btn').click((e)=>{
         if ($("#env-results-panel").is(":visible")){
             envAnalysisChart(data);
             envAnalysisGrid(data);
+            mapEnable();
         } else {
             envAnalysisResultsPanel(data); 
         }

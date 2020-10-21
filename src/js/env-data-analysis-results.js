@@ -3,6 +3,7 @@ import 'jspanel4/es6module/extensions/modal/jspanel.modal.js';
 import 'jspanel4/dist/jspanel.css'
 import Tabulator from 'tabulator-tables';
 import 'chart.js';
+import { mapEnable } from './utils';
 
 const envAnalysisGrid = (data) => {
     // console.log(data);
@@ -159,6 +160,7 @@ const envAnalysisResultsPanel = (data) => {
         callback: () => {
             envAnalysisGrid(data);
             envAnalysisChart(data);
+            mapEnable();
         }
     });
 };
