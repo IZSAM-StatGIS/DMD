@@ -5,7 +5,7 @@ import lodash from 'lodash';
 import { server } from './data';
 import { selectedFeatures } from './map';
 import { envAnalysisResultsPanel, envAnalysisGrid, envAnalysisChart } from './env-data-analysis-results';
-import { mapDisable, mapEnable } from './utils';
+import { mapDisable, mapEnable, messageDialog } from './utils';
 
 const populateSelectedOtbList = () => {
     $('#otb-selector').empty()
@@ -116,23 +116,29 @@ $('#run-analysis-btn').click((e)=>{
         // Formattazione dei dati per grid e grafico
         let data = [];
         let grouped = lodash.groupBy(data_arr,'DATE');
-        lodash.forEach(grouped,(item, key) => {
-            let obj = { 
-                DATE: key, 
-                LSTD: item.filter(o => o.MODIS == 'LSTD')[0].VALUE,
-                LSTN: item.filter(o => o.MODIS == 'LSTN')[0].VALUE,
-                NDVI: item.filter(o => o.MODIS == 'NDVI')[0].VALUE,
-                EVI:  item.filter(o => o.MODIS == 'EVI' )[0].VALUE
+        try {
+            lodash.forEach(grouped,(item, key) => {
+                let obj = { 
+                    DATE: key, 
+                    LSTD: item.filter(o => o.MODIS == 'LSTD')[0].VALUE,
+                    LSTN: item.filter(o => o.MODIS == 'LSTN')[0].VALUE,
+                    NDVI: item.filter(o => o.MODIS == 'NDVI')[0].VALUE,
+                    EVI:  item.filter(o => o.MODIS == 'EVI' )[0].VALUE
+                }
+                data.push(obj);
+            });
+            if ($("#env-results-panel").is(":visible")){
+                envAnalysisChart(data);
+                envAnalysisGrid(data);
+                mapEnable();
+            } else {
+                envAnalysisResultsPanel(data); 
             }
-            data.push(obj);
-        });
-        if ($("#env-results-panel").is(":visible")){
-            envAnalysisChart(data);
-            envAnalysisGrid(data);
+        } catch {
             mapEnable();
-        } else {
-            envAnalysisResultsPanel(data); 
+            messageDialog('An has error occurred while processing data.<br/> Please, try again...', 'error');
         }
+        
     },250);
 
 });

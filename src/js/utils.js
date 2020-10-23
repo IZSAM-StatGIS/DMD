@@ -43,4 +43,30 @@ const mapEnable = () => {
     loadingPanel.close();
 }
 
-export { generateMonthYearRange, mapDisable, mapEnable }
+const messageDialog = (msg, type) => {
+
+    let theme = '#033C73 filled';
+    let title = 'Message';
+    let logo  = '<i class="far fa-comment-alt fa-lg"></i>';
+
+    if (type == 'error') {
+        theme = 'danger filled';
+        title = 'Error';
+        logo  = '<i class="fas fa-exclamation-triangle fa-lg"></i>';
+    } else if (type == 'warning') {
+        theme = 'warning filled';
+        title = 'Warning';
+        logo  = '<i class="fas fa-exclamation-triangle fa-lg"></i>';
+    }
+
+    jsPanel.create({
+        id: 'msg-panel',
+        theme: theme,
+        headerTitle: logo+' '+title,
+        headerControls: 'closeonly',
+        content: `<div style="padding:20px;">${msg}</div>`,
+        contentSize: 'auto'
+    });
+}
+
+export { generateMonthYearRange, mapDisable, mapEnable, messageDialog }
