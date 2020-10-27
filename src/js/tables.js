@@ -126,7 +126,7 @@ const populateDistributionGrid = (data) => {
         placeholder: "No Data Available",
         layout: "fitColumns", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
-            {title:"Geo ID", field:"GEO_ID"},
+            {title:"Geo ID", field:"GEO_ID", visible: false},
             {title:"Country", field:"COUNTRY_N"},
             {title:"Region", field:"REG_NAME"},
             {title:"Admin unit", field:"admin_name"},
