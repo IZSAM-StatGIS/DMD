@@ -162,7 +162,7 @@ const distributionCharts = new VectorImageLayer({
 map.addLayer(distributionCharts);
 distributionCharts.set('name','Distribution Charts');
 distributionCharts.setOpacity(0.8);
-distributionCharts.setZIndex(server.layers.vector.distribution_aggreg.zidx);
+distributionCharts.setZIndex(server.layers.vector.distribution.zidx+1);
 distributionCharts.setVisible(false); 
 let chartsZoom = 7; // accensione automatica per zoom >= chartsZoom
 
