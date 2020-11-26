@@ -37,11 +37,12 @@ const buildRestQuery = (disease, species, subtype, country, source, startdt, end
         return 'invalid date range';
     } else {
         // Estrazione sezioni data per la query sulla distribuzione
-        let ref_start_ym    = moment(startdt, 'DD/MM/YYYY').format('YYYY MM DD');
-        let ref_end_ym      = moment(enddt, 'DD/MM/YYYY').format('YYYY MM DD');
+        let start_my    = '01/'+moment(startdt, 'DD/MM/YYYY').format('MM/YYYY');
+        let end_my      = '01/'+moment(enddt, 'DD/MM/YYYY').format('MM/YYYY');
         // Query di base con i campi obbligatori
         let otb_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND DATE_OF_START_OF_THE_EVENT >= DATE '"+startdt+"' AND DATE_OF_START_OF_THE_EVENT <= DATE '"+enddt+"'";
-        let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND REF_START_YM >= '"+ref_start_ym+"' AND REF_START_YM <= '"+ref_end_ym+"'";
+        // let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND REF_START_YM >= '"+ref_start_ym+"' AND REF_START_YM <= '"+ref_end_ym+"'";
+        let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND START_DATE >= DATE '"+start_my+"' AND END_DATE <= DATE '"+end_my+"'";
         // Aggiunta dei campi non obbligatori alla query
         if (species.length > 0){ 
             otb_sql += " AND DESC_SPECIE IN ('"+species.join("','")+"')"; 

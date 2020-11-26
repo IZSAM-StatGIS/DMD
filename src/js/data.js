@@ -68,7 +68,7 @@ const getDistribution = (sql) => {
         params:{
             where: sql,
             outFields: "*",
-            orderByFields: "YEAR_REF_START, MONTH_REF_START",
+            orderByFields: "START_DATE",
             geometryPrecision: "3",
             outSR: "3857",
             f: "geojson"
