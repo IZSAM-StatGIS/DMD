@@ -4,6 +4,7 @@ import { Datepicker } from 'vanillajs-datepicker';
 import { getOutbreaks, getDistribution } from './data';
 import { setTimePanel } from './time';
 import { updateModis, setFullExtent } from './map';
+import { messageDialog } from './utils';
 
 
 // Selezione di tutte le malattie all'avvio
@@ -35,14 +36,17 @@ const buildRestQuery = (disease, species, subtype, country, source, startdt, end
         return 'missing values';
     } else if (moment(startdt,'DD/MM/YYYY').isAfter(moment(enddt, 'DD/MM/YYYY'))){
         return 'invalid date range';
+    } else if(moment(enddt, 'DD/MM/YYYY').diff(moment(startdt, 'DD/MM/YYYY'), 'days') > 1096){
+        return 'too large time interval';
+    } else if (disease.includes('BT') && moment(enddt, 'DD/MM/YYYY').diff(moment(startdt, 'DD/MM/YYYY'), 'days') > 366){
+        return 'too large time interval for BT';
     } else {
         // Estrazione sezioni data per la query sulla distribuzione
-        let start_my    = '01/'+moment(startdt, 'DD/MM/YYYY').format('MM/YYYY');
-        let end_my      = '01/'+moment(enddt, 'DD/MM/YYYY').format('MM/YYYY');
+        // let start_my    = '01/'+moment(startdt, 'DD/MM/YYYY').format('MM/YYYY');
+        // let end_my      = '01/'+moment(enddt, 'DD/MM/YYYY').format('MM/YYYY');
         // Query di base con i campi obbligatori
         let otb_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND DATE_OF_START_OF_THE_EVENT >= DATE '"+startdt+"' AND DATE_OF_START_OF_THE_EVENT <= DATE '"+enddt+"'";
-        // let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND REF_START_YM >= '"+ref_start_ym+"' AND REF_START_YM <= '"+ref_end_ym+"'";
-        let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND START_DATE >= DATE '"+start_my+"' AND END_DATE <= DATE '"+end_my+"'";
+        let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND START_DATE >= DATE '"+startdt+"' AND END_DATE <= DATE '"+enddt+"'";
         // Aggiunta dei campi non obbligatori alla query
         if (species.length > 0){ 
             otb_sql += " AND DESC_SPECIE IN ('"+species.join("','")+"')"; 
@@ -92,11 +96,19 @@ const setFilters = (sliderend) => {
     let query = buildRestQuery(disease, species, subtype, country, source, startdt, enddt);
     // console.log(query)
     if (query == 'missing values' ){
-        alert('Mandatory fields missing');
+        messageDialog('This request could not be sent: <strong>Required fields not filled</strong>','error');
         return;
     }
     if (query == 'invalid date range'){
-        alert('Invalid date range');
+        messageDialog('This request could not be sent: <strong>Invalid date range</strong>','error');
+        return;
+    }
+    if (query == 'too large time interval'){
+        messageDialog('This request could not be sent: <strong>Date range greater than 3 years</strong>','error');
+        return;
+    }
+    if (query == 'too large time interval for BT'){
+        messageDialog('This request could not be sent: <strong>Date range greater than one year is not permitted for Bluetongue</strong>','error');
         return;
     }
     // Get Outbreaks
