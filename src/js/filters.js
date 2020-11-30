@@ -38,9 +38,9 @@ const buildRestQuery = (disease, species, subtype, country, source, startdt, end
         return 'invalid date range';
     } else if(moment(enddt, 'DD/MM/YYYY').diff(moment(startdt, 'DD/MM/YYYY'), 'days') > 1096){
         return 'too large time interval';
-    } else if (disease.includes('BT') && moment(enddt, 'DD/MM/YYYY').diff(moment(startdt, 'DD/MM/YYYY'), 'days') > 366){
+    } /* else if (disease.includes('BT') && moment(enddt, 'DD/MM/YYYY').diff(moment(startdt, 'DD/MM/YYYY'), 'days') > 366){
         return 'too large time interval for BT';
-    } else {
+    }*/ else {
         // Estrazione sezioni data per la query sulla distribuzione
         // let start_my    = '01/'+moment(startdt, 'DD/MM/YYYY').format('MM/YYYY');
         // let end_my      = '01/'+moment(enddt, 'DD/MM/YYYY').format('MM/YYYY');
@@ -107,10 +107,10 @@ const setFilters = (sliderend) => {
         messageDialog('This request could not be sent: <strong>Date range greater than 3 years</strong>','error');
         return;
     }
-    if (query == 'too large time interval for BT'){
+    /* if (query == 'too large time interval for BT'){
         messageDialog('This request could not be sent: <strong>Date range greater than one year is not permitted for Bluetongue</strong>','error');
         return;
-    }
+    } */
     // Get Outbreaks
     // ****************************************************************************
     getOutbreaks(query.otb);
