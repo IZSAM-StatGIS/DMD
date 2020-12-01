@@ -41,9 +41,6 @@ const buildRestQuery = (disease, species, subtype, country, source, startdt, end
     } /* else if (disease.includes('BT') && moment(enddt, 'DD/MM/YYYY').diff(moment(startdt, 'DD/MM/YYYY'), 'days') > 366){
         return 'too large time interval for BT';
     }*/ else {
-        // Estrazione sezioni data per la query sulla distribuzione
-        // let start_my    = '01/'+moment(startdt, 'DD/MM/YYYY').format('MM/YYYY');
-        // let end_my      = '01/'+moment(enddt, 'DD/MM/YYYY').format('MM/YYYY');
         // Query di base con i campi obbligatori
         let otb_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND DATE_OF_START_OF_THE_EVENT >= DATE '"+startdt+"' AND DATE_OF_START_OF_THE_EVENT <= DATE '"+enddt+"'";
         let dst_sql = "DISEASE_DESC IN ('"+disease.join("','")+"') AND START_DATE >= DATE '"+startdt+"' AND END_DATE <= DATE '"+enddt+"'";
