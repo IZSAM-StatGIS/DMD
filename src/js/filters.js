@@ -8,7 +8,8 @@ import { messageDialog } from './utils';
 
 
 // Selezione di tutte le malattie all'avvio
-$('#disease').selectpicker('selectAll');
+// $('#disease').selectpicker('selectAll');
+$('#disease').selectpicker('val','BT');
 
 // Configurazione datepicker start date
 const start_date_input = document.querySelector('#startdate');
