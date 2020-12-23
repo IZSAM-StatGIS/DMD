@@ -430,6 +430,13 @@ document.querySelector("#basemap-selector").addEventListener('change', (e) => {
               url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
           })
       });
+  } else if (selected_basemap == "positron" ){
+    baselayer = new TileLayer({
+        source: new XYZ ({
+            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            url: 'http://{1-4}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+        })
+    });
   } else if (selected_basemap == "osm"){
       baselayer = new TileLayer({
         source: new OSM()

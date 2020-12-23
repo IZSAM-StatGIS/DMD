@@ -137,7 +137,7 @@ $('#set-filters-btn').click((e)=>{
 $('#reset-filters-btn').click((e)=>{
     e.preventDefault();
     // Reset campi form
-    $('#disease').selectpicker('selectAll');
+    $('#disease').selectpicker('val','BT');
     $('#species').selectpicker('deselectAll');
     $('#subtype').selectpicker('deselectAll');
     $('#country').selectpicker('deselectAll');
