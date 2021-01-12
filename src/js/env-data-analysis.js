@@ -88,7 +88,7 @@ $('#run-analysis-btn').click((e)=>{
                 f: 'json'
             }
         }).then(response => {
-            
+            console.log(response)
             let samples = response.data.samples;
             samples.forEach(sample => {
                 let modis_name = sample.attributes.Name;
@@ -139,7 +139,7 @@ $('#run-analysis-btn').click((e)=>{
             messageDialog('An has error occurred while processing data.<br/> Please, try again...', 'error');
         }
         
-    },250);
+    },1500);
 
 });
 
