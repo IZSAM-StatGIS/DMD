@@ -143,10 +143,4 @@ $('#run-analysis-btn').click((e)=>{
 
 });
 
-
-/*
-$('#clear-analysis-btn').click((e)=>{
-    $('#env-analysis-res-container').hide();
-});*/
-
 export { populateSelectedOtbList };
